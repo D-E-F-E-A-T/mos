@@ -2,6 +2,7 @@
 KERNEL_OFFSET equ 0x1000
 
 _start:
+	xchg bx, bx
 	mov [BOOT_DEVICE], dl
 	mov ax, cs
 	mov ds, ax

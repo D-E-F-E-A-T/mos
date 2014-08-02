@@ -11,10 +11,10 @@ int puts(char *s)
 
 int main()
 {
-	char msg[] = "Hello Kernel in C, Hey man Dummy Message!!!!";
+	char msg[] = "message built from Ubuntu VM!!!!";
 
 	puts(msg);
-
+	
 	return 0;
 }
 
