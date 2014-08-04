@@ -1,8 +1,16 @@
 /*
 	Abstraction of screen memory at 0xB8000.
 */
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include "../std/int.h"
 #include "../std/status.h"
+
+#define LF	(10)
+#define CR 	(13)
+#define NUL	(0)
+
 
 #define SCREEN_BASE		(0xB8000)
 #define SCREEN_ROWS		(25)
@@ -37,3 +45,6 @@ int puts(char *s);
 int printf(char *fmt, ...);
 
 int clear_screen();
+
+
+#endif

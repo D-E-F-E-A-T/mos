@@ -1,6 +1,3 @@
-#define LF	(10)
-#define CR 	(13)
-#define NUL	(0)
 
 
 #include "screen.h"

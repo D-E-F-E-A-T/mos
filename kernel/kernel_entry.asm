@@ -1,5 +1,5 @@
 [bits 32]
 [extern main]
 
-call main
+call _kmain
 jmp $
