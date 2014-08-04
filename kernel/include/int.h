@@ -1,9 +1,9 @@
 #ifndef INT_H
 #define INT_H
 
-#define uint8	unsigned char
-#define uint16	unsigned short
-#define uint32	unsigned int
+#define u8	unsigned char
+#define u16	unsigned short
+#define u32	unsigned int
 
 #define int8	char
 #define int16	short

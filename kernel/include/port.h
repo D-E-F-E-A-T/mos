@@ -6,44 +6,13 @@
 
 #include <int.h>
 
-static inline uint8 inb(uint16 port)
-{
-	uint8 ret;
-	asm volatile (
-		"inb %%dx, %%al"
-		: "=a"	(ret)
-		: "d"	(port));
+// form 44 entOS
+inline u8 inportb(u16 port);
 
-	return ret;
-}
+inline u16 inportw(u16 port);
 
-static inline uint16 inw(uint16 port)
-{
-	uint16 ret;
-	asm volatile (
-		"inb %%dx, %%al"
-		: "=a"	(ret)
-		: "d"	(port));
+inline void outportb(u16 port, u8 data);
 
-	return ret;
-}
-
-static inline void outb(uint16 port, uint8 data)
-{
-	asm volatile (
-		"outb %%al, %%bx"
-		: : "a" (data)
-		: "b"	(port)
-		)
-}
-
-static inline void outw(uint16 port, uint16 data)
-{
-	asm volatile (
-		"outw %%ax, %%bx"
-		: : "a" (data)
-		: "b"	(port)
-		)
-}
+inline void outportw(u16 port, u16 data);
 
 #endif

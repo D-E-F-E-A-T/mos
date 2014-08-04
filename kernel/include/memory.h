@@ -2,14 +2,15 @@
 #define MEMORY_H
 #include <int.h>
 
-int memcpy(uint8 *dst, uint8 *src, uint16 size)
+int memcpy(u8 *dst, u8 *src, u32 size)
 {
 
 }
 
-int memset(uint8 *dst, uint8 data, uint16 size)
+int memset(u8 *dst, u8 data, u32 size)
 {
-	for (int i = 0; i < size; ++i) {
+	puts("in memset\n");
+	for (u32 i = 0; i < size; ++i) {
 		dst[i] = data;
 	}
 }

@@ -1,6 +1,6 @@
 
 CC = gcc
-CCFLAGS = -ffreestanding -fno-builtin -nostdinc -fno-exceptions -I./kernel/include
+CCFLAGS = -ffreestanding -fno-builtin -nostdinc -fno-exceptions -std=c99 -I./kernel/include
 
 AS = nasm
 ASFLAGS = 
@@ -31,6 +31,7 @@ mbr.img : mbr.bin kernel.bin
 mbr.bin : mbr.asm
 	$(AS) $< -f bin -o $@
 
+
 kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $^
 
@@ -38,12 +39,10 @@ kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS)
 $(KERNEL_ENTRY_O) : ./kernel/kernel_entry.asm
 	$(AS) $< -f elf -o $@
 
-
 .c.o : 
 	$(CC) $(CCFLAGS) -o $@ -c $<
 
-# kernel rules
-# # 
+
 
 .PHONY: clean
 clean:
