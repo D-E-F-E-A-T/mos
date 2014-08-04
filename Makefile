@@ -14,15 +14,13 @@ DDFLAGS = bs=512 count=3 conv=notrunc
 
 KERNEL_ENTRY_O = ./kernel/kernel_entry.o
 
-# HEADERS	:=
-# HEADERS += 	$(wildcard ./kernel/*.h) \
-# 		$(wildcard ./kernel/drivers/*.h)
 
-C_SOURCES	= $(wildcard ./kernel/*.c) \
- 		$(wildcard ./kernel/drivers/*.c)
+SOURCES	:= 
+SOURCES += $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c) 
 
 C_OBJS	:= 
-C_OBJS	+= 	$(patsubst %.c, %.o, $(C_SOURCES))
+C_OBJS	+= 	$(patsubst %.c, %.o, $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c))
+			
 
 # boot sector rules
 
@@ -33,19 +31,21 @@ mbr.img : mbr.bin kernel.bin
 mbr.bin : mbr.asm
 	$(AS) $< -f bin -o $@
 
-kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS)
+kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $^
 
-$(C_OBJS) : $(C_SOURCES)
-	$(CC) $(CCFLAGS) -e _kemain -c $^
 
 $(KERNEL_ENTRY_O) : ./kernel/kernel_entry.asm
 	$(AS) $< -f elf -o $@
+
+
+.c.o : 
+	$(CC) $(CCFLAGS) -o $@ $<
 
 # kernel rules
 # # 
 
 .PHONY: clean
 clean:
-	rm -Rf  *.o *.bin
-	rm mbr.img
+	find . -name "*.o" -type f -delete
+	find . -name "*.bin" -type f -delete
