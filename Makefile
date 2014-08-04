@@ -40,7 +40,7 @@ $(KERNEL_ENTRY_O) : ./kernel/kernel_entry.asm
 
 
 .c.o : 
-	$(CC) $(CCFLAGS) -o $@ $<
+	$(CC) $(CCFLAGS) -o $@ -c $<
 
 # kernel rules
 # # 
