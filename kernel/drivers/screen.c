@@ -1,6 +1,6 @@
 
 
-#include "screen.h"
+#include <screen.h>
 
 int get_cursor(uint16 *row, uint16 *col)
 {

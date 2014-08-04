@@ -1,6 +1,6 @@
 
 CC = gcc
-CCFLAGS = -ffreestanding -fno-stack-protector
+CCFLAGS = -ffreestanding -fno-builtin -nostdinc -fno-exceptions -I./kernel/include
 
 AS = nasm
 ASFLAGS = 
@@ -14,11 +14,12 @@ DDFLAGS = bs=512 count=3 conv=notrunc
 
 KERNEL_ENTRY_O = ./kernel/kernel_entry.o
 
-HEADERS	:=
-HEADERS += 	$(wildcard ./kernel/*.h) \
-		$(wildcard ./kernel/drivers/*.h)
+# HEADERS	:=
+# HEADERS += 	$(wildcard ./kernel/*.h) \
+# 		$(wildcard ./kernel/drivers/*.h)
 
-C_SOURCES	= $(patsubst %.h, %.c, $(HEADERS))
+C_SOURCES	= $(wildcard ./kernel/*.c) \
+ 		$(wildcard ./kernel/drivers/*.c)
 
 C_OBJS	:= 
 C_OBJS	+= 	$(patsubst %.c, %.o, $(C_SOURCES))
@@ -36,7 +37,7 @@ kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 $(C_OBJS) : $(C_SOURCES)
-	$(CC) $(CCFLAGS) -e main -c $^
+	$(CC) $(CCFLAGS) -e _kemain -c $^
 
 $(KERNEL_ENTRY_O) : ./kernel/kernel_entry.asm
 	$(AS) $< -f elf -o $@
