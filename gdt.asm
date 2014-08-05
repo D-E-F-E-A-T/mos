@@ -28,6 +28,7 @@ gdt_start:
 		db 11001111b 	; 2nd flag and Limit (16 - 19)
 		db 0x0 			; Base (24 - 31)
 
+
 gdt_end:
 
 global_descriptor:

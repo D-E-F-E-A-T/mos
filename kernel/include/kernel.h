@@ -4,6 +4,7 @@
 #include <screen.h>
 #include <int.h>
 #include <memory.h>
+#include <idt.h>
 
 
 #endif

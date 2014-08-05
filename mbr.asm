@@ -10,23 +10,11 @@ _start:
 
 	mov bp, 0x8000
 	mov sp, bp
- 
-	call clear_screen
-
 	
 	mov dx, HELLO_MSG		; print 16 bits real mode message
 	call print_string
 
 	call load_kernel 		; load kernel.bin into 0x1000
-
-	; mov dx, GOODBYE_MSG
-	; call print_string
-
-
-	; mov bx, 0x9000
-	; mov dh, 0x5
-	; mov dl, [BOOT_DEVICE]
-	; call disk_load
 
 	call switch_to_pm
 	

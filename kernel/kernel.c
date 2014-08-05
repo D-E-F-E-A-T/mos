@@ -4,16 +4,17 @@
 
 int _kemain()
 {
-
+	int i;
 	char msg[] = "Hello \nWorld\n";
 
-
 	clear_screen();
+	idtr_setup();
 	puts(msg);
 
-	puts("start memset\n");
-	memset((char *)0xFFFF0000, 'x', 20);
-	puts((char *)0xFFFF0000);
+	memset((char *)0x9000, 'x', 20);
+	puts((char *)0x9000);
+
+	i = 1 / 0;
 	
 	return 0;
 }
