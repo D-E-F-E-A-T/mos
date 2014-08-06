@@ -36,6 +36,10 @@ switch_to_pm:
 	; go into 32 bits Protected mode
 	cli
 	lgdt [global_descriptor]
+	; set A20 for access 32bit address
+	mov ax, 0x2401
+	int 15h
+
 	mov eax, cr0
 	or eax, 0x1
 	mov cr0, eax

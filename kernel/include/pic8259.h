@@ -10,6 +10,8 @@
 #define PIC_MASTER_DATA_PORT		(PIC_MASTER_COMMAND_PORT + 1)
 #define PIC_SLAVE_DATA_PORT			(PIC_SLAVE_COMMAND_PORT + 1)
 
+#define ICW1_
+
 void pic8259_init();
 
 

@@ -11,8 +11,8 @@ int _kemain()
 	idtr_setup();
 	puts(msg);
 
-	memset((char *)0x9000, 'x', 20);
-	puts((char *)0x9000);
+	memset((char *)0x900000, 'x', 20);
+	puts((char *)0x900000);
 
 	i = 1 / 0;
 	
