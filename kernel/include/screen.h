@@ -17,7 +17,7 @@
 #define SCREEN_ROWS		(25)
 #define SCREEN_COLS		(80)
 
-#define COLOR_SCHEME	(0x0F)	// 	White on Black 0x0F
+#define COLOR_SCHEME	(0x1F)	// 	White on Black 0x0F .. white on Blue
 
 // from https://github.com/44670/entOS/blob/master/src/kernel/console.cpp
 #define GET_ADDR(x, y)	((u8 *)SCREEN_BASE + ((x) + (y) * 80) * 2)
