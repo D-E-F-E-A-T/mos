@@ -1,5 +1,5 @@
 #include <idt.h>
-#include <kernel.h>
+
 
 IDTR 		idtr;
 IDT_ENTRY	*IDT;
@@ -33,6 +33,11 @@ void idtr_setup()
 	isr_setup(14, _isr14, IDT_CODE_SELECTOR, 0x8e);
 	isr_setup(15, _isr15, IDT_CODE_SELECTOR, 0x8e);
 	isr_setup(16, _isr16, IDT_CODE_SELECTOR, 0x8e);
+
+
+
+	// IRQ Mapping
+	pic8259_init(USER_DEFINE_ISR, USER_DEFINE_ISR + 8);
 
 
 	idtr.limit = (256 * sizeof(IDT_ENTRY)) - 1;
@@ -69,6 +74,8 @@ void _isr2()
 
 void _isr3() 
 {
+	__asm__ __volatile__("xchg %bx, %bx");	
+	puts("\n in _isr3\n");
 	while(1);
 }
 
@@ -133,6 +140,87 @@ void _isr15()
 }
 
 void _isr16() 
+{
+	while(1);
+}
+
+
+void _isr32_irq0() 
+{
+	while(1);
+}
+
+void _isr33_irq1() 
+{
+	while(1);
+}
+
+void _isr34_irq2() 
+{
+	while(1);
+}
+
+void _isr35_irq3() 
+{
+	while(1);
+}
+
+void _isr36_irq4() 
+{
+	while(1);
+}
+
+void _isr37_irq5() 
+{
+	while(1);
+}
+
+void _isr38_irq6() 
+{
+	while(1);
+}
+
+void _isr39_irq7() 
+{
+	while(1);
+}
+
+void _isr40_irq8() 
+{
+	while(1);
+}
+
+void _isr41_irq9() 
+{
+	while(1);
+}
+
+void _isr42_irq10() 
+{
+	while(1);
+}
+
+void _isr43_irq11() 
+{
+	while(1);
+}
+
+void _isr44_irq12() 
+{
+	while(1);
+}
+
+void _isr45_irq13() 
+{
+	while(1);
+}
+
+void _isr46_irq14() 
+{
+	while(1);
+}
+
+void _isr47_irq15() 
 {
 	while(1);
 }

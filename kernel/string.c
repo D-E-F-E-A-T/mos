@@ -1,4 +1,4 @@
-#include <memory.h>
+#include <string.h>
 
 int memcpy(u8 *dst, u8 *src, u32 size)
 {

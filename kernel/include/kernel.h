@@ -3,7 +3,7 @@
 
 #include <screen.h>
 #include <int.h>
-#include <memory.h>
+#include <string.h>
 #include <idt.h>
 
 typedef struct 
