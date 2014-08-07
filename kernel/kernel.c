@@ -1,6 +1,5 @@
-
-
 #include <kernel.h>
+
 
 int _kemain()
 {
@@ -11,8 +10,8 @@ int _kemain()
 	idtr_setup();
 	puts(msg);
 
-	memset((char *)0x900000, 'x', 20);
-	puts((char *)0x900000);
+	memset((char *)0x700000, 'x', 20);
+	puts((char *)0x700000);
 
 	i = 1 / 0;
 	

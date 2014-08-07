@@ -28,7 +28,7 @@ mbr.img : mbr.bin kernel.bin
 	# $(DD) $(DDFLAGS) if=$^ of=$@
 	cat $^ > $@
 
-mbr.bin : mbr.asm
+mbr.bin : mbr.asm gdt.asm stdio.asm load_sector.asm 
 	$(AS) $< -f bin -o $@
 
 
