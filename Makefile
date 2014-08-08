@@ -22,8 +22,6 @@ C_OBJS	:=
 C_OBJS	+= 	$(patsubst %.c, %.o, $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c))
 			
 
-# boot sector rules
-
 mbr.img : mbr.bin kernel.bin
 	# $(DD) $(DDFLAGS) if=$^ of=$@
 	cat $^ > $@

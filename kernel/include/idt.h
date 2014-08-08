@@ -11,7 +11,7 @@
 
 typedef struct 
 {
-	u16 offset_low;		// offset 0-15
+	u16 offset_low;		// offset 0-15 
 	u16 segment_selector;
 	u8	reserved;		// 0
 	u8	attr;
@@ -21,6 +21,8 @@ typedef struct
 void idtr_setup();
 
 void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute);
+
+int int_dispatch(u32 int_no);
 
 void _isr0();
 void _isr1();

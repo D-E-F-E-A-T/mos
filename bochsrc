@@ -26,7 +26,9 @@ debug: action=ignore
 info: action=report
 error: action=report
 panic: action=fatal
-keyboard: type=mf, serial_delay=250, paste_delay=100000, user_shortcut=none
+keyboard: type=mf, serial_delay=200, paste_delay=100000
+keyboard_mapping: enabled=1, map=/usr/local/share/bochs/keymaps/sdl-pc-us.map
+  keyboard: user_shortcut=ctrl-alt-del
 mouse: type=ps2, enabled=0, toggle=ctrl+mbutton
 speaker: enabled=1, mode=gui
 parport1: enabled=1, file=none

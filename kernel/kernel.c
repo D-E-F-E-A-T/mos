@@ -10,11 +10,10 @@ int _kemain()
 	idtr_setup();
 	puts(msg);
 
-	memset((char *)0x700000, 'x', 20);
-	puts((char *)0x700000);
+	xprintf("hello %d\n", 99);
 
 	// i = 1 / 0;
-	__asm__ ("int $3");
+	__asm__ ("int $0x20");
 	
 	return 0;
 }

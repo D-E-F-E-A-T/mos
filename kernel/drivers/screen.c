@@ -67,10 +67,10 @@ int puts(char *s)
 	return STATUS_SUCCESS;
 }
 
-int printf(char *fmt, ...)
-{
-	return STATUS_SUCCESS;
-}
+// int printf(char *fmt, ...)
+// {
+// 	return STATUS_SUCCESS;
+// }
 
 int clear_screen()
 {

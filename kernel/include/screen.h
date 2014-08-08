@@ -45,7 +45,7 @@ int putc(char c);
 
 int puts(char *s);
 
-int printf(char *fmt, ...);
+// int printf(char *fmt, ...);
 
 int clear_screen();
 
