@@ -7,7 +7,7 @@
 #include <pic8259.h>
 
 #define IDT_CODE_SELECTOR	(0x08)
-#define USER_DEFINE_ISR		(0x20)
+#define IRQ_BASE			(0x20)
 
 typedef struct 
 {
@@ -17,6 +17,8 @@ typedef struct
 	u8	attr;
 	u16 offset_high;		// offset 16-31		
 } __attribute__((packed)) IDT_ENTRY;
+
+
 
 void idtr_setup();
 
