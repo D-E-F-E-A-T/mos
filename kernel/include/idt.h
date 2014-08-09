@@ -8,6 +8,8 @@
 
 #define IDT_CODE_SELECTOR	(0x08)
 #define IRQ_BASE			(0x20)
+#define IDT_ENTRY_COUNT		(256)
+#define IDT_ENTRY_FLAGS		(0x8e)
 
 typedef struct 
 {
@@ -18,47 +20,62 @@ typedef struct
 	u16 offset_high;		// offset 16-31		
 } __attribute__((packed)) IDT_ENTRY;
 
+typedef struct 
+{
+	u32 gs, fs, es, ds;
+	u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;
+	u32 isrno, errorno;
+	u32 eip, cs, eflags, user_esp, ss;
+} __attribute__((packed)) IDT_EXP_CONTEXT;
 
+typedef struct 
+{
+	u32 gs, fs, es, ds;
+	u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;
+	u32 irqno;
+	u32 eip, cs, eflags, user_esp, ss;
+} __attribute__((packed)) IDT_IRQ_CONTEXT;
 
 void idtr_setup();
 
 void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute);
 
-int int_dispatch(u32 int_no);
+void _exception_dispatch(IDT_EXP_CONTEXT exp_context);
+void _irq_dispatch(IDT_IRQ_CONTEXT irq_context);
 
-void _isr0();
-void _isr1();
-void _isr2();
-void _isr3();
-void _isr4();
-void _isr5();
-void _isr6();
-void _isr7();
-void _isr8();
-void _isr9();
-void _isr10();
-void _isr11();
-void _isr12();
-void _isr13();
-void _isr14();
-void _isr15();
-void _isr16();
+extern void exp0_wrapper();
+extern void exp1_wrapper();
+extern void exp2_wrapper();
+extern void exp3_wrapper();
+extern void exp4_wrapper();
+extern void exp5_wrapper();
+extern void exp6_wrapper();
+extern void exp7_wrapper();
+extern void exp8_wrapper();
+extern void exp9_wrapper();
+extern void exp10_wrapper();
+extern void exp11_wrapper();
+extern void exp12_wrapper();
+extern void exp13_wrapper();
+extern void exp14_wrapper();
+extern void exp15_wrapper();
+extern void exp16_wrapper();
 
-void _isr32_irq0();
-void _isr33_irq1();
-void _isr34_irq2();
-void _isr35_irq3();
-void _isr36_irq4();
-void _isr37_irq5();
-void _isr38_irq6();
-void _isr39_irq7();
-void _isr40_irq8();
-void _isr41_irq9();
-void _isr42_irq10();
-void _isr43_irq11();
-void _isr44_irq12();
-void _isr45_irq13();
-void _isr46_irq14();
-void _isr47_irq15();
+extern void irq0_wrapper();
+extern void irq1_wrapper();
+extern void irq2_wrapper();
+extern void irq3_wrapper();
+extern void irq4_wrapper();
+extern void irq5_wrapper();
+extern void irq6_wrapper();
+extern void irq7_wrapper();
+extern void irq8_wrapper();
+extern void irq9_wrapper();
+extern void irq10_wrapper();
+extern void irq11_wrapper();
+extern void irq12_wrapper();
+extern void irq13_wrapper();
+extern void irq14_wrapper();
+extern void irq15_wrapper();
 
 #endif

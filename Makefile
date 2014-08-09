@@ -11,8 +11,11 @@ LDFLAGS = -Ttext 0x1000 --oformat binary
 DD = dd
 DDFLAGS = bs=512 count=3 conv=notrunc 
 
+KERNEL_ENTRY_ASM = ./kernel/kernel_entry.asm
+KERNEL_ENTRY_O = $(patsubst %.asm, %.o, $(KERNEL_ENTRY_ASM))
 
-KERNEL_ENTRY_O = ./kernel/kernel_entry.o
+ISR_WRAPPER_ASM = ./kernel/isr_wrapper.asm
+ISR_WRAPPER_O = $(patsubst %.asm, %.o, $(ISR_WRAPPER_ASM))
 
 
 SOURCES	:= 
@@ -30,11 +33,14 @@ mbr.bin : mbr.asm gdt.asm stdio.asm load_sector.asm
 	$(AS) $< -f bin -o $@
 
 
-kernel.bin : $(KERNEL_ENTRY_O) $(C_OBJS) 
+kernel.bin : $(KERNEL_ENTRY_O) $(ISR_WRAPPER_O) $(C_OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $^
 
 
-$(KERNEL_ENTRY_O) : ./kernel/kernel_entry.asm
+$(KERNEL_ENTRY_O) : $(KERNEL_ENTRY_ASM)
+	$(AS) $< -f elf -o $@
+
+$(ISR_WRAPPER_O) : $(ISR_WRAPPER_ASM)
 	$(AS) $< -f elf -o $@
 
 .c.o : 
