@@ -3,26 +3,27 @@ extern _exception_dispatch, _irq_dispatch
 
 %macro exp 1
 	global exp%1_wrapper
-	push 0
-	push %1
-	jmp _exp_wrapper
+	exp%1_wrapper:
+		push 0
+		push %1
+		jmp exp_wrapper
 
 %endmacro
 
-
-
 %macro exp_with_error 1
 	global exp%1_wrapper
-	push %1
-	jmp _exp_wrapper
+	exp%1_wrapper:
+		push %1
+		jmp exp_wrapper
 
 %endmacro
 
 
 %macro irq 1
 	global irq%1_wrapper
-	push %1
-	jmp _irq_wrapper
+	irq%1_wrapper:
+		push %1
+		jmp irq_wrapper
 
 %endmacro
 
@@ -62,7 +63,7 @@ irq 13
 irq 14
 irq 15
 
-_exp_wrapper:
+exp_wrapper:
 	pushad
 	push ds 
 	push es
@@ -85,7 +86,7 @@ _exp_wrapper:
 
 	iret
 
-_irq_wrapper:
+irq_wrapper:
 	pushad
 	push ds 
 	push es

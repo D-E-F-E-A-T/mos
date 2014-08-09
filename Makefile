@@ -12,14 +12,13 @@ DD = dd
 DDFLAGS = bs=512 count=3 conv=notrunc 
 
 KERNEL_ENTRY_ASM = ./kernel/kernel_entry.asm
-KERNEL_ENTRY_O = $(patsubst %.asm, %.o, $(KERNEL_ENTRY_ASM))
+KERNEL_ENTRY_O = ./kernel/kernel_entry.o
 
 ISR_WRAPPER_ASM = ./kernel/isr_wrapper.asm
-ISR_WRAPPER_O = $(patsubst %.asm, %.o, $(ISR_WRAPPER_ASM))
+ISR_WRAPPER_O = ./kernel/isr_wrapper.o
 
-
-SOURCES	:= 
-SOURCES += $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c) 
+# SOURCES	:= 
+# SOURCES += $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c) 
 
 C_OBJS	:= 
 C_OBJS	+= 	$(patsubst %.c, %.o, $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c))
@@ -45,7 +44,6 @@ $(ISR_WRAPPER_O) : $(ISR_WRAPPER_ASM)
 
 .c.o : 
 	$(CC) $(CCFLAGS) -o $@ -c $<
-
 
 
 .PHONY: clean
