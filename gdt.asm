@@ -22,17 +22,17 @@ gdt_start:
 		; same as code segment but type flag
 		; type flag: (code) 0, (expand down) 0, (writable) 1, (accessed) 0 -> 0010b
 		dw 0xFFFF 		; Limit (0 - 15)
-		dw 0x00			; Base (0 - 15)
+		dw 0x0			; Base (0 - 15)
 		db 0x0 			; Base (16 - 23)
 		db 10010010b 	; 1st flag and type flag
 		db 11001111b 	; 2nd flag and Limit (16 - 19)
-		db 0x00			; Base (24 - 31)
+		db 0x0			; Base (24 - 31)
 
 	idt_data:
 		; same as code segment but type flag
 		; type flag: (code) 0, (expand down) 0, (writable) 1, (accessed) 0 -> 0010b
 		dw 0xFFFF 		; Limit (0 - 15)
-		dw 0xB000 		; Base (0 - 15)
+		dw 0x0003 		; Base (0 - 15)
 		db 0x00 		; Base (16 - 23)
 		db 10010010b 	; 1st flag and type flag
 		db 11001111b 	; 2nd flag and Limit (16 - 19)

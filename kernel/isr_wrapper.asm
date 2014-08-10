@@ -1,9 +1,11 @@
 [bits 32]
 extern _exception_dispatch, _irq_dispatch
 
+
 %macro exp 1
 	global exp%1_wrapper
 	exp%1_wrapper:
+		cli
 		push 0
 		push %1
 		jmp exp_wrapper
@@ -13,6 +15,7 @@ extern _exception_dispatch, _irq_dispatch
 %macro exp_with_error 1
 	global exp%1_wrapper
 	exp%1_wrapper:
+		cli
 		push %1
 		jmp exp_wrapper
 
@@ -22,6 +25,7 @@ extern _exception_dispatch, _irq_dispatch
 %macro irq 1
 	global irq%1_wrapper
 	irq%1_wrapper:
+		cli
 		push %1
 		jmp irq_wrapper
 
@@ -64,47 +68,19 @@ irq 14
 irq 15
 
 exp_wrapper:
+	
 	pushad
-	push ds 
-	push es
-	push fs
-	push gs
 
-	mov eax, 0x10
-	mov ds, eax
-	mov es, eax
-	mov fs, eax
-	mov gs, eax
 	call _exception_dispatch
-
-	pop gs
-	pop fs
-	pop es
-	pop ds
-
 	popad
+	add esp, 8
 
 	iret
 
 irq_wrapper:
 	pushad
-	push ds 
-	push es
-	push fs
-	push gs
-
-	mov eax, 0x10
-	mov ds, eax
-	mov es, eax
-	mov fs, eax
-	mov gs, eax
 	call _irq_dispatch
-
-	pop gs
-	pop fs
-	pop es
-	pop ds
-
 	popad
+	add esp, 4
 
 	iret

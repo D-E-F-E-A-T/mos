@@ -25,6 +25,8 @@
 #define ICW4_BUF_SLAVE				(0x08)		/* Buffered mode/slave */
 #define ICW4_BUF_MASTER				(0x0C)		/* Buffered mode/master */
 #define ICW4_SFNM					(0x10)		/* Special fully nested (not) */
+
+#define PIC_EOI						(0x20)		/* End-of-interrupt command code */
  
 /*
 arguments:
@@ -33,6 +35,8 @@ arguments:
 	_slave_index - same for slave PIC: offset2..offset2+7
 */
 void pic8259_init(int _master_index, int _slave_index);
+
+
 
 #endif
 

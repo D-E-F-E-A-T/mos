@@ -7,6 +7,8 @@
 #include <pic8259.h>
 
 #define IDT_CODE_SELECTOR	(0x08)
+#define IDTR_BASE			(0x8000)
+
 #define IRQ_BASE			(0x20)
 #define IDT_ENTRY_COUNT		(256)
 #define IDT_ENTRY_FLAGS		(0x8e)
@@ -22,7 +24,6 @@ typedef struct
 
 typedef struct 
 {
-	u32 gs, fs, es, ds;
 	u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;
 	u32 isrno, errorno;
 	u32 eip, cs, eflags, user_esp, ss;
@@ -30,7 +31,6 @@ typedef struct
 
 typedef struct 
 {
-	u32 gs, fs, es, ds;
 	u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;
 	u32 irqno;
 	u32 eip, cs, eflags, user_esp, ss;
@@ -41,7 +41,10 @@ void idtr_setup();
 void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute);
 
 void _exception_dispatch(IDT_EXP_CONTEXT exp_context);
+
 void _irq_dispatch(IDT_IRQ_CONTEXT irq_context);
+
+void _send_eoi(u8 irqno);
 
 extern void exp0_wrapper();
 extern void exp1_wrapper();

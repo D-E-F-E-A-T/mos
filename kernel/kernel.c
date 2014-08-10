@@ -13,7 +13,9 @@ int _kemain()
 	xprintf("hello %d\n", 99);
 
 	// i = 1 / 0;
-	__asm__ ("int $0x20");
+	// __asm__ ("int $0x1");
+
+	// __asm__ ("int $0x2");
 	
 	return 0;
 }

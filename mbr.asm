@@ -25,7 +25,7 @@ load_kernel:
 	call print_string
 
 	mov bx, KERNEL_OFFSET
-	mov dh, 10					; 15 sectors will be load into memory
+	mov dh, 14					; 15 sectors will be load into memory
 	mov dl, [BOOT_DEVICE]		; read from boot drive (floppy A)
 	call disk_load
 
@@ -65,9 +65,9 @@ init_pm:
 							; change to Data segment defined
 	mov ds, ax
 	mov es, ax
-	mov ss, ax
 	mov gs, ax
 	mov fs, ax
+	mov ss, ax
 
 	mov ebp, 0x90000 		; update stack position at the top of free space
 	mov esp, ebp
