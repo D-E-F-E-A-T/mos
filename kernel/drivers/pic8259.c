@@ -2,9 +2,9 @@
 
 void pic8259_init(int _master_index, int _slave_index)
 {
-	u8 master_mask, slave_mask;
-	master_mask		= inportb(PIC_MASTER_DATA_PORT);
-	slave_mask		= inportb(PIC_MASTER_DATA_PORT);
+	// u8 master_mask, slave_mask;
+	// master_mask		= inportb(PIC_MASTER_DATA_PORT);
+	// slave_mask		= inportb(PIC_MASTER_DATA_PORT);
 
 	// ICW1
 	outportb(PIC_MASTER_COMMAND_PORT, ICW1_INIT | ICW1_ICW4);
@@ -30,8 +30,12 @@ void pic8259_init(int _master_index, int _slave_index)
 	outportb(PIC_SLAVE_DATA_PORT, ICW4_8086);
 	io_wait();	
 
-	outportb(PIC_MASTER_DATA_PORT, master_mask);
-	outportb(PIC_MASTER_DATA_PORT, slave_mask);
+	// outportb(PIC_MASTER_DATA_PORT, master_mask);
+	// outportb(PIC_MASTER_DATA_PORT, slave_mask);
+
+	// Mask/Disable all
+	outportb(PIC_MASTER_DATA_PORT, 0xff);
+	outportb(PIC_SLAVE_DATA_PORT, 0xff);
 }
 
 void _send_eoi(u8 irqno)

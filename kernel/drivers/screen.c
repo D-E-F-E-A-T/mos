@@ -1,5 +1,3 @@
-
-
 #include <screen.h>
 
 int get_cursor_row()
@@ -25,6 +23,10 @@ int set_cursor(u16 row, u16 col)
 int new_line()
 {
 	set_cursor(get_cursor_row() + 1, 0);
+	
+	if (get_cursor_row() >= SCREEN_ROWS)
+		scroll_up(1);
+
 	return STATUS_SUCCESS;
 }
 
@@ -67,11 +69,6 @@ int puts(char *s)
 	return STATUS_SUCCESS;
 }
 
-// int printf(char *fmt, ...)
-// {
-// 	return STATUS_SUCCESS;
-// }
-
 int clear_screen()
 {
 	int i;
@@ -82,14 +79,33 @@ int clear_screen()
 	for (i = 0; i < SCREEN_ROWS; ++i)
 		clear_row(i);
 			
-
 	return STATUS_SUCCESS;
 }
 
+/**
+ * scroll up the screen in specific rows.
+ * @param rows [how many row will scroll up]
+ */
+void scroll_up(int rows)
+{
+	u8 *src = SCREEN_BASE + rows * SCREEN_COLS * 2;
+	u8 *dst = SCREEN_BASE;
+
+	set_cursor(get_cursor_row() - rows, get_cursor_col());
+	mcpy(dst, src, SCREEN_COLS * SCREEN_ROWS * 2);
+
+	for (int i = 0; i < rows; i++)
+		clear_row(SCREEN_ROWS - 1 - i);
+}
+
+/**
+ * clear content in a specific row.
+ * @param  row [line number]
+ * @return     [kernel status]
+ */
 int clear_row(int row)
 {
-	int i;
-	for (i = 0; i < SCREEN_COLS; ++i) {
+	for (int i = 0; i < SCREEN_COLS; ++i) {
 			*(SCREEN_BASE + (row * SCREEN_COLS + i) * 2 + 1)	= g_screen.color;
 			*(SCREEN_BASE + (row * SCREEN_COLS + i) * 2)		= ' ';
 	}

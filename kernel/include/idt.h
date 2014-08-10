@@ -9,10 +9,11 @@
 
 #define IDT_CODE_SELECTOR	(0x08)
 #define IDTR_BASE			(0x9000)
-
-#define IRQ_BASE			(0x20)
 #define IDT_ENTRY_COUNT		(256)
 #define IDT_ENTRY_FLAGS		(0x8e)
+
+#define IRQ_BASE			(0x20)
+
 
 typedef struct 
 {
@@ -46,7 +47,6 @@ void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute);
 void _exception_dispatch(IDT_EXP_CONTEXT *exp_context);
 
 void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context);
-
 
 
 /* Handles the keyboard interrupt */

@@ -7,6 +7,7 @@
 #include <int.h>
 #include <port.h>
 #include <status.h>
+#include <string.h>
 
 #define LF	(10)
 #define CR 	(13)
@@ -45,9 +46,9 @@ int putc(char c);
 
 int puts(char *s);
 
-// int printf(char *fmt, ...);
-
 int clear_screen();
+
+void scroll_up(int rows);
 
 int clear_row();
 

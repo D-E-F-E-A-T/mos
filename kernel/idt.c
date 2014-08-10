@@ -49,14 +49,13 @@ void idtr_setup()
 	pic8259_init(IRQ_BASE, IRQ_BASE + 8);
 
 
-	idtr.limit = (256 * sizeof(IDT_ENTRY)) - 1;
+	idtr.limit = (IDT_ENTRY_COUNT * sizeof(IDT_ENTRY)) - 1;
 	
 	__asm__ __volatile__ ("lidt %0": "=m" (idtr));
 
 
-	// test timer irq
-	_enable_irq(0);
-	timer_set(20);
+	// enable timer irq
+	enable_timer(20);
 
 	// enable keyboard
 	_enable_irq(1);
@@ -95,9 +94,9 @@ void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context)
 	switch (irq_context->irqno) {
 	case 0:
 		timer_count++;
-		if (timer_count > 80) { // 20 times per sec, 2 sec for 40 times.
+		if (timer_count > 40) { // 20 times per sec, 2 sec for 40 times.
 			xprintf("timer triggered. count = %d \n", timer_count);
-			timer_count -= 80;
+			timer_count -= 40;
 		}
 		break;
 

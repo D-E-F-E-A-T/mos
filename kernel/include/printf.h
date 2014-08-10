@@ -2,7 +2,7 @@
 #define PRINTF_H
 
 #include <stdarg.h>
-#include <screen.h>		/* putc() */
+#include <screen.h>
 
 /*------------------------------------------------------------------------*/
 /* Universal string handler for user console interface (C)ChaN, 2011 */

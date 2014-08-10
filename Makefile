@@ -1,6 +1,6 @@
 
 CC = gcc
-CCFLAGS = -ffreestanding -fno-builtin -nostdinc -fno-exceptions -std=c99 -I./kernel/include
+CCFLAGS = -ffreestanding -fno-builtin -nostdinc -fno-exceptions -std=c99 -I./kernel/include -I./kernel/drivers/include
 
 AS = nasm
 ASFLAGS = 
