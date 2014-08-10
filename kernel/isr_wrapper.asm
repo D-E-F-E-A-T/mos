@@ -6,6 +6,7 @@ extern _exception_dispatch, _irq_dispatch
 	global exp%1_wrapper
 	exp%1_wrapper:
 		cli
+		xchg bx, bx
 		push 0
 		push %1
 		jmp exp_wrapper
@@ -70,8 +71,20 @@ irq 15
 exp_wrapper:
 	
 	pushad
+	push ds
+	push es
+	push fs
+	push gs
 
+	mov eax, esp
+	push eax
 	call _exception_dispatch
+	pop eax
+
+	pop ds
+	pop es
+	pop fs
+	pop gs
 	popad
 	add esp, 8
 
@@ -79,7 +92,20 @@ exp_wrapper:
 
 irq_wrapper:
 	pushad
+	push ds
+	push es
+	push fs
+	push gs
+
+	mov eax, esp
+	push eax
 	call _irq_dispatch
+	pop eax
+
+	pop ds
+	pop es
+	pop fs
+	pop gs
 	popad
 	add esp, 4
 

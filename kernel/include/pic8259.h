@@ -28,15 +28,12 @@
 
 #define PIC_EOI						(0x20)		/* End-of-interrupt command code */
  
-/*
-arguments:
-	_master_index - vector offset for master PIC
-		vectors on the master become offset1..offset1+7
-	_slave_index - same for slave PIC: offset2..offset2+7
-*/
+
 void pic8259_init(int _master_index, int _slave_index);
+void _send_eoi(u8 irqno);
 
-
+void _enable_irq(u8 index);
+void _disable_irq(u8 index);
 
 #endif
 

@@ -3,7 +3,6 @@
 
 int _kemain()
 {
-	int i;
 	char msg[] = "Hello \nWorld\n";
 
 	clear_screen();
@@ -11,12 +10,8 @@ int _kemain()
 	puts(msg);
 
 	xprintf("hello %d\n", 99);
-
-	// i = 1 / 0;
-	// __asm__ ("int $0x1");
-
-	// __asm__ ("int $0x2");
 	
+	__asm__ ("sti");
 	return 0;
 }
 

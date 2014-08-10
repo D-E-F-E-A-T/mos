@@ -3,6 +3,8 @@
 
 static IDTR idtr;
 
+int timer_count = 0;
+
 void idtr_setup()
 {
 
@@ -51,6 +53,14 @@ void idtr_setup()
 	
 	__asm__ __volatile__ ("lidt %0": "=m" (idtr));
 
+
+	// test timer irq
+	_enable_irq(0);
+	timer_set(20);
+
+	// enable keyboard
+	_enable_irq(1);
+	
 }
 
 
@@ -64,30 +74,76 @@ void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute)
 	IDT[idt_index].attr = attribute;
 }
 
-void _send_eoi(u8 irqno)
+void _exception_dispatch(IDT_EXP_CONTEXT *exp_context)
 {
-	if(irqno >= 8)
-		outportb(PIC_SLAVE_COMMAND_PORT, PIC_EOI);
- 
-	outportb(PIC_MASTER_COMMAND_PORT, PIC_EOI);
-}
-
-void _exception_dispatch(IDT_EXP_CONTEXT exp_context)
-{
-	xprintf("the context ISR number = %d, ERROR no = %d\n", exp_context.isrno, exp_context.errorno);
+	xprintf("the ISR number = %d, ERROR no = %d\n", exp_context->isrno, exp_context->errorno);
 	xprintf("the segments cs = %d, eip = %d\n", 
-		exp_context.cs,
-		exp_context.eip);
+		exp_context->cs,
+		exp_context->eip);
+
+	puts("Kernel Exception, System Halt.\n");
+	for (;;);
 }
 
 
-void _irq_dispatch(IDT_IRQ_CONTEXT irq_context)
+void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context)
 {
-	xprintf("the IRQ index = %d\n", irq_context.irqno);
-	xprintf("the segments cs = %04d \n", 
-		irq_context.cs);
+	// xprintf("the IRQ index = %d\n", irq_context->irqno);
+	// xprintf("the segments cs = %04d \n", 
+	// 	irq_context->cs);
 
-	_send_eoi(irq_context.irqno);
+	switch (irq_context->irqno) {
+	case 0:
+		timer_count++;
+		if (timer_count > 80) { // 20 times per sec, 2 sec for 40 times.
+			xprintf("timer triggered. count = %d \n", timer_count);
+			timer_count -= 80;
+		}
+		break;
+
+	case 1:
+		xprintf("keyboard triggered. \n");
+		keyboard_handler();
+		break;
+
+	default:
+		;
+	}
+
+	_send_eoi(irq_context->irqno);
+}
+
+/* Handles the keyboard interrupt */
+void keyboard_handler()
+{
+    unsigned char scancode;
+
+    /* Read from the keyboard's data buffer */
+    scancode = inportb(0x60);
+
+    /* If the top bit of the byte we read from the keyboard is
+    *  set, that means that a key has just been released */
+    if (scancode & 0x80)
+    {
+        /* You can use this one to see if the user released the
+        *  shift, alt, or control keys... */
+    }
+    else
+    {
+        /* Here, a key was just pressed. Please note that if you
+        *  hold a key down, you will get repeated key press
+        *  interrupts. */
+
+        /* Just to show you how this works, we simply translate
+        *  the keyboard scancode into an ASCII value, and then
+        *  display it to the screen. You can get creative and
+        *  use some flags to see if a shift is pressed and use a
+        *  different layout, or you can add another 128 entries
+        *  to the above layout to correspond to 'shift' being
+        *  held. If shift is held using the larger lookup table,
+        *  you would add 128 to the scancode when you look for it */
+        xprintf("the scancode is %x \n", scancode);
+    }
 }
 
 

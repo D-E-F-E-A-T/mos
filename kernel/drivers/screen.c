@@ -74,7 +74,7 @@ int puts(char *s)
 
 int clear_screen()
 {
-	int i, j;
+	int i;
 
 	set_cursor(0, 0);
 	g_screen.color = COLOR_SCHEME;
