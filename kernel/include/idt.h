@@ -6,6 +6,7 @@
 #include <kernel.h>
 #include <pic8259.h>
 #include <timer.h>
+#include <keyboard.h>
 
 #define IDT_CODE_SELECTOR	(0x08)
 #define IDTR_BASE			(0x9000)
@@ -40,17 +41,13 @@ typedef struct
 	u32 eip, cs, eflags, user_esp, ss;
 } __attribute__((packed)) IDT_IRQ_CONTEXT;
 
-void idtr_setup();
+void idt_init();
 
 void isr_setup(u8 idt_index, void *callback, u16 selector, u8 attribute);
 
 void _exception_dispatch(IDT_EXP_CONTEXT *exp_context);
 
 void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context);
-
-
-/* Handles the keyboard interrupt */
-void keyboard_handler();
 
 
 extern void exp0_wrapper();

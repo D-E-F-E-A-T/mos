@@ -5,6 +5,7 @@
 #include <int.h>
 #include <string.h>
 #include <idt.h>
+#include <timer.h>
 #include <printf.h>
 
 typedef struct 

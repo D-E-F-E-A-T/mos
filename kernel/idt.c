@@ -1,11 +1,9 @@
 #include <idt.h>
 
 
-static IDTR idtr;
+IDTR idtr;
 
-int timer_count = 0;
-
-void idtr_setup()
+void idt_init()
 {
 
 	idtr.base = IDTR_BASE;
@@ -52,13 +50,6 @@ void idtr_setup()
 	idtr.limit = (IDT_ENTRY_COUNT * sizeof(IDT_ENTRY)) - 1;
 	
 	__asm__ __volatile__ ("lidt %0": "=m" (idtr));
-
-
-	// enable timer irq
-	enable_timer(20);
-
-	// enable keyboard
-	_enable_irq(1);
 	
 }
 
@@ -92,14 +83,14 @@ void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context)
 	// 	irq_context->cs);
 
 	switch (irq_context->irqno) {
-	case 0:
-		timer_count++;
-		if (timer_count > 40) { // 20 times per sec, 2 sec for 40 times.
-			xprintf("timer triggered. count = %d \n", timer_count);
-			timer_count -= 40;
-		}
+	case 0: {
+		static int hz = 0;
+		if ( !(hz % TIMER_HZ) )
+			xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
+		hz++;
+		
 		break;
-
+	}
 	case 1:
 		xprintf("keyboard triggered. \n");
 		keyboard_handler();
@@ -110,39 +101,6 @@ void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context)
 	}
 
 	_send_eoi(irq_context->irqno);
-}
-
-/* Handles the keyboard interrupt */
-void keyboard_handler()
-{
-    unsigned char scancode;
-
-    /* Read from the keyboard's data buffer */
-    scancode = inportb(0x60);
-
-    /* If the top bit of the byte we read from the keyboard is
-    *  set, that means that a key has just been released */
-    if (scancode & 0x80)
-    {
-        /* You can use this one to see if the user released the
-        *  shift, alt, or control keys... */
-    }
-    else
-    {
-        /* Here, a key was just pressed. Please note that if you
-        *  hold a key down, you will get repeated key press
-        *  interrupts. */
-
-        /* Just to show you how this works, we simply translate
-        *  the keyboard scancode into an ASCII value, and then
-        *  display it to the screen. You can get creative and
-        *  use some flags to see if a shift is pressed and use a
-        *  different layout, or you can add another 128 entries
-        *  to the above layout to correspond to 'shift' being
-        *  held. If shift is held using the larger lookup table,
-        *  you would add 128 to the scancode when you look for it */
-        xprintf("the scancode is %x \n", scancode);
-    }
 }
 
 
