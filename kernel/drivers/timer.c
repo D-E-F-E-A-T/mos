@@ -24,3 +24,21 @@ void disable_timer()
 {
 	_disable_irq(0);
 }
+
+void timer_handler()
+{
+	static u32 hz = 0;
+	if ( !(hz % TIMER_HZ) ) {
+		// xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
+		// __asm__ ("int $40");
+		/*RTC_DATETIME rtc;
+		get_RTC(&rtc);
+
+		xprintf("the CMOS RTC time = %d:%d:%d   %d/%d/%d \n",
+				rtc.hour, rtc.minute, rtc.second,
+				rtc.day, rtc.month, rtc.year);
+
+		hz -= TIMER_HZ;*/
+	}
+	hz++;
+}

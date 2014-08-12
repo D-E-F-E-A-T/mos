@@ -83,16 +83,11 @@ void _irq_dispatch(IDT_IRQ_CONTEXT *irq_context)
 	// 	irq_context->cs);
 
 	switch (irq_context->irqno) {
-	case 0: {
-		static int hz = 0;
-		if ( !(hz % TIMER_HZ) )
-			xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
-		hz++;
-		
+	case 0: 
+		timer_handler();
 		break;
-	}
+	
 	case 1:
-		xprintf("keyboard triggered. \n");
 		keyboard_handler();
 		break;
 

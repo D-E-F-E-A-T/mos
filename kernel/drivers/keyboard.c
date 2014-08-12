@@ -1,13 +1,26 @@
 #include <keyboard.h>
 
+
+
 void keyboard_init()
 {
 	_enable_irq(1);
+    char *display_key_buff = DISPLAY_KEY_BUFF;
+    mcpy(
+        (u8 *)display_key_buff, 
+        (u8 *)"XX1234567890-=XXqwertyuiop[]XXasdfghjkl;'`X\\zxcvbnm,./",
+        0x200);
+}
+
+void display_key(u8 scancode)
+{
+    putc(DISPLAY_KEY_BUFF[scancode]);
 }
 
 void keyboard_handler()
 {
-	unsigned char scancode;
+    
+	u8 scancode;
 
     /* Read from the keyboard's data buffer */
     scancode = inportb(0x60);
@@ -18,7 +31,7 @@ void keyboard_handler()
     {
         /* You can use this one to see if the user released the
         *  shift, alt, or control keys... */
-        xprintf("the released key scancode is %X \n", scancode);
+        // xprintf("the released key scancode is %X \n", scancode);
     }
     else
     {
@@ -34,6 +47,8 @@ void keyboard_handler()
         *  to the above layout to correspond to 'shift' being
         *  held. If shift is held using the larger lookup table,
         *  you would add 128 to the scancode when you look for it */
-        xprintf("the pressed key scancode is %X \n", scancode);
+        // xprintf("the pressed key scancode is %X the ascii is %c \n", scancode, display_lower_ascii[scancode]);
+
+        display_key(scancode);
     }
 }

@@ -7,6 +7,7 @@
 #include <pic8259.h>
 #include <timer.h>
 #include <keyboard.h>
+#include <datetime.h>
 
 #define IDT_CODE_SELECTOR	(0x08)
 #define IDTR_BASE			(0x9000)
