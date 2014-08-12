@@ -1,16 +1,37 @@
 OUTPUT_FORMAT(binary)
 
+ENTRY(_kemain)
+STARTUP(./kernel/kernel_entry.o)
+
 SECTIONS
 {
 	. = 0x1000;
-	.text : { *(.text) }
+	.text BLOCK(1K) : ALIGN(1K)
+	{
+		*(.text)
+	}
 	
-	. = 0x5000;
-	.data : {
+	
+	/* Read-only data. */
+	.rodata BLOCK(1K) : ALIGN(1K)
+	{
+		*(.rodata)
+	}
+
+	/* Read-write data (initialized) */
+	.data BLOCK(1K) : ALIGN(1K)
+	{
 		*(.data)
 	}
 
-	.bss : {
+	/* Read-write data (uninitialized) and stack */
+	.bss BLOCK(1K) : ALIGN(1K)
+	{
+		*(COMMON)
 		*(.bss)
+		*(.bootstrap_stack)
 	}
+
+	/* The compiler may produce other sections, by default it will put them in
+	   a segment with the same name. Simply add stuff here as needed. */
 }

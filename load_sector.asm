@@ -43,7 +43,6 @@ disk_load:
 	mov ch, 0 			; Cylinder 0
 	mov cl, 2 			; start form sector 2
 
-	
 	int 0x13
 	jc disk_read_error
 	pop dx

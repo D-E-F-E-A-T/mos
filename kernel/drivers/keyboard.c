@@ -5,14 +5,21 @@
 void keyboard_init()
 {
 	_enable_irq(1);
-    char *display_key_buff = DISPLAY_KEY_BUFF;
+
     mcpy(
-        (u8 *)display_key_buff, 
+        (u8 *)LOWER_DISPLAY_KEY_BUFF, 
         (u8 *)"XX1234567890-=XXqwertyuiop[]XXasdfghjkl;'`X\\zxcvbnm,./",
-        0x200);
+        DISPLAY_KEY_BUFF_SIZE);
+
+    mcpy(
+        (u8 *)UPPER_DISPLAY_KEY_BUFF, 
+        (u8 *)"XX!@#$%^&*()_+XXQWERTYUIOP{}XXASDFGHJKL:\"~X\\ZXCVBNM<>?",
+        DISPLAY_KEY_BUFF_SIZE);
+
+    DISPLAY_KEY_BUFF = LOWER_DISPLAY_KEY_BUFF;
 }
 
-void do_key(u8 scancode)
+void make_key(u8 scancode)
 {
     switch (scancode) {
 
@@ -20,8 +27,42 @@ void do_key(u8 scancode)
         putc('\n');
         break;
 
+    case LEFT_SHIFT:
+    case RIGHT_SHIFT:
+        DISPLAY_KEY_BUFF = UPPER_DISPLAY_KEY_BUFF;
+        break;
+
+    case CAPSLOCL:
+        // eat the make scancode
+        break;
+
     default:
         putc(DISPLAY_KEY_BUFF[scancode]);
+    }
+}
+
+void break_key(u8 scancode)
+{
+    switch (scancode) {
+
+    case ENTER:
+        break;
+
+    case LEFT_SHIFT:
+    case RIGHT_SHIFT:
+        DISPLAY_KEY_BUFF = LOWER_DISPLAY_KEY_BUFF;
+        break;
+
+    // bad, should use a flag.
+    case CAPSLOCL:
+        if (DISPLAY_KEY_BUFF == LOWER_DISPLAY_KEY_BUFF)
+            DISPLAY_KEY_BUFF = UPPER_DISPLAY_KEY_BUFF;
+        else 
+            DISPLAY_KEY_BUFF = LOWER_DISPLAY_KEY_BUFF;
+        break;
+
+    default:
+        ;
     }
 }
 
@@ -40,6 +81,8 @@ void keyboard_handler()
         /* You can use this one to see if the user released the
         *  shift, alt, or control keys... */
         // xprintf("the released key scancode is %X \n", scancode);
+        
+        break_key(scancode & 0x7F);
     }
     else
     {
@@ -57,6 +100,6 @@ void keyboard_handler()
         *  you would add 128 to the scancode when you look for it */
         // xprintf("the pressed key scancode is %X the ascii is %c \n", scancode, display_lower_ascii[scancode]);
 
-        do_key(scancode);
+        make_key(scancode);
     }
 }

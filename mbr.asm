@@ -25,7 +25,7 @@ load_kernel:
 	call print_string
 
 	mov bx, KERNEL_OFFSET
-	mov dh, 14					; 15 sectors will be load into memory
+	mov dh, 17 + 18 * 1			; 17 for first cylinder and 18 full of second cylinders will be load into memory
 	mov dl, [BOOT_DEVICE]		; read from boot drive (floppy A)
 	call disk_load
 

@@ -6,8 +6,8 @@ AS = nasm
 ASFLAGS = 
 
 LD = ld
-# LDFLAGS = -T link.ld
-LDFLAGS = -Ttext 0x1000 --oformat binary
+LDFLAGS = -T link.ld
+# LDFLAGS = -Ttext 0x1000 --oformat binary
 
 DD = dd
 DDFLAGS = bs=512 count=3 conv=notrunc 
