@@ -8,7 +8,7 @@
 // bad, testing hack
 #define DISPLAY_KEY_BUFF	((u8 *)0x20000)
 
-// Nonvisiable Keys scancode
+// Invisiable Keys scancode
 #define ENTER				(0x1C)
 
 void keyboard_init();
