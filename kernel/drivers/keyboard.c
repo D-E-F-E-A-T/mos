@@ -12,9 +12,17 @@ void keyboard_init()
         0x200);
 }
 
-void display_key(u8 scancode)
+void do_key(u8 scancode)
 {
-    putc(DISPLAY_KEY_BUFF[scancode]);
+    switch (scancode) {
+
+    case ENTER:
+        putc('\n');
+        break;
+
+    default:
+        putc(DISPLAY_KEY_BUFF[scancode]);
+    }
 }
 
 void keyboard_handler()
@@ -49,6 +57,6 @@ void keyboard_handler()
         *  you would add 128 to the scancode when you look for it */
         // xprintf("the pressed key scancode is %X the ascii is %c \n", scancode, display_lower_ascii[scancode]);
 
-        display_key(scancode);
+        do_key(scancode);
     }
 }
