@@ -31,14 +31,14 @@ void timer_handler()
 	if ( !(hz % TIMER_HZ) ) {
 		// xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
 		// __asm__ ("int $40");
-		/*RTC_DATETIME rtc;
+		RTC_DATETIME rtc;
 		get_RTC(&rtc);
 
 		xprintf("the CMOS RTC time = %d:%d:%d   %d/%d/%d \n",
 				rtc.hour, rtc.minute, rtc.second,
 				rtc.day, rtc.month, rtc.year);
 
-		hz -= TIMER_HZ;*/
+		hz -= TIMER_HZ;
 	}
 	hz++;
 }

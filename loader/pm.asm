@@ -1,9 +1,9 @@
 
-
 [bits 16]
 global switch_to_pm
 switch_to_pm:
 	; go into 32 bits Protected mode
+
 	cli
 	lgdt [global_descriptor]
 	; set A20 for access 32bit address
@@ -18,7 +18,7 @@ switch_to_pm:
 	jmp CODE_SEG:init_pm		; flush pre-fetch instruction pipeline in real mode
 
 
-%include "./boot/stdio.asm"
+; %include "./boot/stdio.asm"
 %include "./boot/load_sector.asm"
 %include "./boot/gdt.asm"
 
