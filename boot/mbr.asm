@@ -34,9 +34,7 @@ load_loader:
 	mov cl, 2 					; read start from sector 3, sector 1 is MBR, sector 2 is loader.
 	call disk_load
 
-	xchg bx, bx
 	call LOADER_OFFSET
-
 	ret
 
 %include "./boot/load_sector.asm"
