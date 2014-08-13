@@ -1,3 +1,5 @@
+LOADER_OFFSET	equ 0x1000
+KERNEL_OFFSET	equ 0x2000
 
 ; AL count of sector will be read
 ; CL sector started
@@ -30,7 +32,7 @@
 
 
 ; DH: sectors will be read
-; DL: 
+; CL: read start form cl sector
 disk_load:
 	push dx
 
@@ -41,7 +43,7 @@ disk_load:
 	mov al, dh 			; read dh sectors
 	mov dh, 0 			; head 0
 	mov ch, 0 			; Cylinder 0
-	mov cl, 2 			; start form sector 2
+	; mov cl, 2 			; start form sector 2
 
 	int 0x13
 	jc disk_read_error
@@ -52,6 +54,6 @@ disk_load:
 	ret
 
 disk_read_error:
-	push DISK_ERROR_MSG
-	call print_string
+	; push DISK_ERROR_MSG
+	; call print_string
 	jmp $

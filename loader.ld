@@ -1,7 +1,7 @@
 OUTPUT_FORMAT(binary)
 
-ENTRY(_kemain)
-STARTUP(./kernel/kernel_entry.o)
+ENTRY(_loader)
+STARTUP(./loader/loader.o)
 
 SECTIONS
 {
