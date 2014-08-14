@@ -1,6 +1,18 @@
 #ifndef MM_H
 #define MM_H
 
+/**
+ * First ~640 KB in physical memory is free for use
+ * another free space start from 1M
+ * 
+ * Base: 00000000 00000000 Limit: 00000000 0009F000 Type: 00000001
+ * Base: 00000000 0009F000 Limit: 00000000 00001000 Type: 00000002
+ * Base: 00000000 000E8000 Limit: 00000000 00018000 Type: 00000002
+ * Base: 00000000 00100000 Limit: 00000000 01EF0000 Type: 00000001
+ * Base: 00000000 01FF0000 Limit: 00000000 00010000 Type: 00000003
+ * Base: 00000000 FFFC0000 Limit: 00000000 00040000 Type: 00000002
+ */
+
 #include <int.h>
 
 #define P_MEM_MAP_ENTRY_COUNT		(0x500)

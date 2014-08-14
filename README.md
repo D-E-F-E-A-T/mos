@@ -1,7 +1,7 @@
 # Momo OS
 
 
-## A little x86 OS for fun.
+## A mini x86 OS for fun.
 
 #### Log
 
