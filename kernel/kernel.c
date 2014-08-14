@@ -4,8 +4,6 @@
 
 int _kemain()
 {
-	u32 *entry_count = (u32 *)0x500;
-
 	
 	clear_screen();
 	idt_init();
@@ -21,7 +19,7 @@ int _kemain()
 	
 	setup_sys_param();
 
-	xprintf("Memory Mapping using int 15h E820\n", *entry_count);
+	xprintf("Memory Mapping using int 15h E820\n");
 	for (int i = 0; i < *mem_map_entry_count; ++i)
 		xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
 			mem_map_entry[i].base_high, 
