@@ -27,18 +27,34 @@ void disable_timer()
 
 void timer_handler()
 {
-	// static u32 hz = 0;
-	// if ( !(hz % TIMER_HZ) ) {
-	// 	// xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
-	// 	// __asm__ ("int $40");
-	// 	RTC_DATETIME rtc;
-	// 	get_RTC(&rtc);
+	static u32 hz = 0;
+	static u32 frame_indicate = 0;
+	if ( !(hz % (TIMER_HZ / 5)) ) {
+		// xprintf("timer triggered. time = %d s \n", hz / TIMER_HZ);
+		
+		// RTC_DATETIME rtc;
+		// get_RTC(&rtc);
 
-	// 	xprintf("the CMOS RTC time = %d:%d:%d   %d/%d/%d \n",
-	// 			rtc.hour, rtc.minute, rtc.second,
-	// 			rtc.day, rtc.month, rtc.year);
+		// xprintf("the CMOS RTC time = %d:%d:%d   %d/%d/%d \n",
+		// 		rtc.hour, rtc.minute, rtc.second,
+		// 		rtc.day, rtc.month, rtc.year);
+		// 		
+		char *frame[6];
+		__asm__ ("xchg %bx, %bx");
 
-	// 	hz -= TIMER_HZ;
-	// }
-	// hz++;
+		frame[0] = (char *)0x200000;
+		frame[1] = (char *)0x201000;
+		frame[2] = (char *)0x202000;
+		frame[3] = (char *)0x203000;
+		frame[4] = (char *)0x204000;
+		frame[5] = (char *)0x205000;
+
+		// clear_screen();
+		set_cursor(0, 0);
+		xprintf(frame[frame_indicate % 6]);
+		frame_indicate++;
+
+		hz -= TIMER_HZ;
+	}
+	hz++;
 }

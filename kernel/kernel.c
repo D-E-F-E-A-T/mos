@@ -29,6 +29,7 @@ int _kemain()
 			mem_map_entry[i].type);
 	
 	__asm__ ("sti");
+
 	return 0;
 }
 
