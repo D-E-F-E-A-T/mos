@@ -9,8 +9,6 @@
 #include <keyboard.h>
 #include <datetime.h>
 
-#include <ascii_play.h>
-
 #define IDT_CODE_SELECTOR	(0x08)
 #define IDTR_BASE			(0x9000)
 #define IDT_ENTRY_COUNT		(256)

@@ -1,7 +1,6 @@
 #include <kernel.h>
 
 
-
 int _kemain()
 {
 	
@@ -18,6 +17,7 @@ int _kemain()
 	puts("\n=======================================================\n");	
 	
 	setup_sys_param();
+	__asm__ ("xchg %bx, %bx");
 
 	xprintf("Memory Mapping using int 15h E820\n");
 	for (int i = 0; i < *mem_map_entry_count; ++i)
