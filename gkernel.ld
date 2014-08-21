@@ -1,0 +1,35 @@
+
+ENTRY(start)
+
+SECTIONS
+{
+	. = 0x00100000;
+	.text BLOCK(1K) : ALIGN(1K)
+	{
+		*(.text)
+	}
+	
+	
+	/* Read-only data. */
+	.rodata BLOCK(1K) : ALIGN(1K)
+	{
+		*(.rodata)
+	}
+
+	/* Read-write data (initialized) */
+	.data BLOCK(1K) : ALIGN(1K)
+	{
+		*(.data)
+	}
+
+	/* Read-write data (uninitialized) and stack */
+	.bss BLOCK(1K) : ALIGN(1K)
+	{
+		*(COMMON)
+		*(.bss)
+		*(.bootstrap_stack)
+	}
+
+	/* The compiler may produce other sections, by default it will put them in
+	   a segment with the same name. Simply add stuff here as needed. */
+}

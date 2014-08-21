@@ -1,7 +1,13 @@
 
+# CC = gcc
+# CCFLAGS := -ffreestanding -fno-builtin -nostdinc -std=c99 \
+# 	-I./kernel/include -I./kernel/drivers/include -I./loader -I.
+# 	
+
+
 CC = gcc
-CCFLAGS := -ffreestanding -fno-builtin -nostdinc -std=c99 \
-	-I./kernel/include -I./kernel/drivers/include -I./loader
+CCFLAGS := -fno-builtin -nostdinc -std=c99 -fno-stack-protector \
+	-I./kernel/include -I./kernel/drivers/include -I./loader -I.
 
 AS = nasm
 ASFLAGS = 
@@ -25,26 +31,30 @@ LOADER_O 	= $(patsubst %.asm, %.o, $(LOADER_ASM))
 
 C_OBJS	:= 
 C_OBJS	+= 	$(patsubst %.c, %.o, $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c))
-			
+		
 
-mbr.img : mbr.bin loader.bin kernel.bin
-	cat $^ > $@
+kernel.bin : loader/loader.o $(ISR_WRAPPER_O) $(C_OBJS)
+	ld -T gkernel.ld -o $@ $^	
 
-mbr.bin : $(BOOT_ASM)
-	$(AS) $< -f bin -o $@
+# mbr.img : mbr.bin loader.bin kernel.bin
+# 	cat $^ > $@
 
-loader.bin : ./loader/loader.o $(LOADER_O)
-	$(LD) -T loader.ld -o loader.bin $(LOADER_O)
-	dd if=/dev/zero bs=$$((512 - `stat -c "%s" loader.bin`)) count=1 >> loader.bin
+# mbr.bin : $(BOOT_ASM)
+# 	$(AS) $< -f bin -o $@
+
+# loader.bin : ./loader/loader.o $(LOADER_O)
+# 	$(LD) -T loader.ld -o loader.bin $(LOADER_O)
+# 	dd if=/dev/zero bs=$$((512 - `stat -c "%s" loader.bin`)) count=1 >> loader.bin
 	
-kernel.bin : $(KERNEL_ENTRY_O) $(ISR_WRAPPER_O) $(C_OBJS) 
-	$(LD) -T kernel.ld -o $@ $^
+# kernel.bin : $(KERNEL_ENTRY_O) $(ISR_WRAPPER_O) $(C_OBJS) 
+# 	$(LD) -T kernel.ld -o $@ $^
+
+%.o : %.asm
+	$(AS) $< -f elf -o $@
 
 %.o : %.c
 	$(CC) $(CCFLAGS) -o $@ -c $<
 
-%.o : %.asm
-	$(AS) $< -f elf -o $@
 
 .PHONY: clean
 clean:

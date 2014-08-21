@@ -18,3 +18,9 @@ If using STARTUP in linker script then startup object file should not occur in a
 * [MBR.bin](./boot/mbr.asm) loaded at 0x7C00, it just load loader.bin and kernel.bin into memory by using int 13h
 * [Loader.bin](./loader/loader.c) loaded at 0x1000, loader collects computer infomation and stroe into somewhere, then switch to 32 bit protected mode.
 * [Kernel.bin](./kernel/kernel.c) loaded at 0x2000, kennel will initialize the IDT and IRQ to handle requests. Then it should perpare the API of mm, fs, io, tasks ...
+
+
+#### Step for Grub2
+* sudo kpartx -av c.img, mount one of patition
+* sudo mount /dev/mapper/loop1p1 /mnt/img, mount the patition
+* copy the kernel into patition space ...

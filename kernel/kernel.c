@@ -1,35 +1,41 @@
 #include <kernel.h>
 
-
-int _kemain()
+int kemain(multiboot_info_t* mb_info, u32 mb_magic)
 {
-	
-	clear_screen();
-	idt_init();
-	timer_init(TIMER_HZ);
-	keyboard_init();
+    __asm__("xchg %bx, %bx");
+    clear_screen();
 
-	puts(" __  __                                  ___    ____  \n");
-	puts("|  \\/  |   ___    _ __ ___     ___      / _ \\  / ___| \n");
-	puts("| |\\/| |  / _ \\  | '_ ` _ \\   / _ \\    | | | | \\___ \\ \n");
-	puts("| |  | | | (_) | | | | | | | | (_) |   | |_| |  ___) |\n");
-	puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
-	puts("\n=======================================================\n");	
-	
-	setup_sys_param();
-	__asm__ ("xchg %bx, %bx");
+    if (mb_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
+        xprintf("multiboot eax is not equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
+    } else {
+        xprintf("multiboot eax is equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
+    }
 
-	xprintf("Memory Mapping using int 15h E820\n");
-	for (int i = 0; i < *mem_map_entry_count; ++i)
-		xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
-			mem_map_entry[i].base_high, 
-			mem_map_entry[i].base_low,
-			mem_map_entry[i].limit_high,
-			mem_map_entry[i].limit_low,
-			mem_map_entry[i].type);
-	
-	__asm__ ("sti");
+    // idt_init();
+    // timer_init(TIMER_HZ);
+    // keyboard_init();
 
-	return 0;
+    puts(" __  __                                  ___    ____  \n");
+    puts("|  \\/  |   ___    _ __ ___     ___      / _ \\  / ___| \n");
+    puts("| |\\/| |  / _ \\  | '_ ` _ \\   / _ \\    | | | | \\___ \\ \n");
+    puts("| |  | | | (_) | | | | | | | | (_) |   | |_| |  ___) |\n");
+    puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
+    puts("\n=======================================================\n");
+
+    setup_sys_param();
+
+    xprintf("Memory Mapping using int 15h E820\n");
+    // for (int i = 0; i < 6; ++i)
+    //     xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
+    //             mem_map_entry[i].base_high,
+    //             mem_map_entry[i].base_low,
+    //             mem_map_entry[i].limit_high,
+    //             mem_map_entry[i].limit_low,
+    //             mem_map_entry[i].type);
+
+    __asm__("sti");
+
+    for (;;)
+        ;
+    return 0;
 }
-

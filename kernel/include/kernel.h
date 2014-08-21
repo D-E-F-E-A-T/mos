@@ -9,13 +9,12 @@
 #include <datetime.h>
 #include <printf.h>
 #include <mm.h>
+#include <loader/multiboot.h>
 
-
-typedef struct 
-{
-	u16 limit;
-	u32 base;
+typedef struct
+    {
+    u16 limit;
+    u32 base;
 } __attribute__((packed)) IDTR;
-
 
 #endif

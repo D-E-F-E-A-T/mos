@@ -38,6 +38,7 @@ init_pm:
 	call begin_pm
 
 begin_pm:
+	finit
 	call KERNEL_OFFSET
 
 	jmp $

@@ -1,3 +1,4 @@
+; extern boot_info
 MEMMAP_ENTRY_COUNT		equ 0x500
 MEMMAP_ENTRY_BASE		equ 0x504
 
