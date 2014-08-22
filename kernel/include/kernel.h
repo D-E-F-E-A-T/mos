@@ -10,6 +10,7 @@
 #include <printf.h>
 #include <mm.h>
 #include <loader/multiboot.h>
+// #include <descriptor.h>
 
 typedef struct
     {

@@ -1,6 +1,6 @@
 #include <idt.h>
 
-IDTR idtr;
+static IDTR idtr;
 
 void idt_init()
 {
@@ -77,7 +77,7 @@ void _irq_dispatch(IDT_IRQ_CONTEXT* irq_context)
 {
     // xprintf("the IRQ index = %d\n", irq_context->irqno);
     // xprintf("the segments cs = %04d \n",
-    // 	irq_context->cs);
+    //  irq_context->cs);
 
     switch (irq_context->irqno) {
     case 0:
@@ -85,6 +85,7 @@ void _irq_dispatch(IDT_IRQ_CONTEXT* irq_context)
         break;
 
     case 1:
+        __asm__("xchg %bx, %bx");
         keyboard_handler();
         break;
 

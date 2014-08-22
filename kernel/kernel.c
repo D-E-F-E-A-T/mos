@@ -1,8 +1,9 @@
 #include <kernel.h>
 
+extern void gdt_setup();
+
 int kemain(multiboot_info_t* mb_info, u32 mb_magic)
 {
-    __asm__("xchg %bx, %bx");
     clear_screen();
 
     if (mb_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
@@ -11,9 +12,11 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
         xprintf("multiboot eax is equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
     }
 
-    // idt_init();
-    // timer_init(TIMER_HZ);
-    // keyboard_init();
+    gdt_setup();
+
+    idt_init();
+    timer_init(TIMER_HZ);
+    keyboard_init();
 
     puts(" __  __                                  ___    ____  \n");
     puts("|  \\/  |   ___    _ __ ___     ___      / _ \\  / ___| \n");
@@ -22,16 +25,20 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
     puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
     puts("\n=======================================================\n");
 
-    setup_sys_param();
-
     xprintf("Memory Mapping using int 15h E820\n");
-    // for (int i = 0; i < 6; ++i)
-    //     xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
-    //             mem_map_entry[i].base_high,
-    //             mem_map_entry[i].base_low,
-    //             mem_map_entry[i].limit_high,
-    //             mem_map_entry[i].limit_low,
-    //             mem_map_entry[i].type);
+    multiboot_memory_map_t* mem_map_entry = (multiboot_memory_map_t*)mb_info->mmap_addr;
+
+    while (mem_map_entry < (multiboot_memory_map_t*)(mb_info->mmap_addr + mb_info->mmap_length)) {
+
+        xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
+                mem_map_entry->addr_high,
+                mem_map_entry->addr_low,
+                mem_map_entry->len_high,
+                mem_map_entry->len_low,
+                mem_map_entry->type);
+
+        mem_map_entry++;
+    }
 
     __asm__("sti");
 

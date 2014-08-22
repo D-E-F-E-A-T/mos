@@ -1,11 +1,9 @@
-OUTPUT_FORMAT(binary)
 
-ENTRY(_kemain)
-STARTUP(./kernel/kernel_entry.o)
+ENTRY(start)
 
 SECTIONS
 {
-	. = 0x2000;
+	. = 0x00100000;
 	.text BLOCK(1K) : ALIGN(1K)
 	{
 		*(.text)

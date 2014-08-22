@@ -29,9 +29,9 @@ typedef struct
 } __attribute__((packed)) MEM_MAP_ENTRY;
 
 // memory mapping information entry array.
-MEM_MAP_ENTRY* mem_map_entry;
+// MEM_MAP_ENTRY* mem_map_entry;
 // The array size of memory mapping information.
-u32* mem_map_entry_count;
+// u32* mem_map_entry_count;
 
 // reference to intel 32 bit paging
 
@@ -72,7 +72,5 @@ typedef struct
     u32 ignored : 3;
     u32 pg_base : 20;
 } __attribute__((packed)) pg_table_entry_t;
-
-void setup_sys_param();
 
 #endif

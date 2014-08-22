@@ -20,7 +20,8 @@ If using STARTUP in linker script then startup object file should not occur in a
 * [Kernel.bin](./kernel/kernel.c) loaded at 0x2000, kennel will initialize the IDT and IRQ to handle requests. Then it should perpare the API of mm, fs, io, tasks ...
 
 
-#### Step for Grub2
+#### Change Boot using GRUB2
 * sudo kpartx -av c.img, mount one of patition
 * sudo mount /dev/mapper/loop1p1 /mnt/img, mount the patition
 * copy the kernel into patition space ...
+* boot OS using harddisk image.
