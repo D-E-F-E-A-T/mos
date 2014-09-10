@@ -9,26 +9,24 @@
 #include <status.h>
 #include <string.h>
 
-#define LF	(10)
-#define CR 	(13)
-#define NUL	(0)
+#define LF (10)
+#define CR (13)
+#define NUL (0)
 
+#define SCREEN_BASE ((u8*)0xB8000)
+#define SCREEN_ROWS (25)
+#define SCREEN_COLS (80)
 
-#define SCREEN_BASE		((u8 *)0xB8000)
-#define SCREEN_ROWS		(25)
-#define SCREEN_COLS		(80)
-
-#define COLOR_SCHEME	(0x0F)	// 	White on Black 0x0F .. white on Blue
+#define COLOR_SCHEME (0x0F) // 	White on Black 0x0F .. white on Blue
 
 // from https://github.com/44670/entOS/blob/master/src/kernel/console.cpp
-#define GET_ADDR(x, y)	((u8 *)SCREEN_BASE + ((x) + (y) * 80) * 2)
-
+#define GET_ADDR(x, y) ((u8*)SCREEN_BASE + ((x) + (y) * 80) * 2)
 
 typedef struct
-{
-	u16 row;
-	u16 col;
-	u8 color;
+    {
+    u16 row;
+    u16 col;
+    u8 color;
 
 } SCREEN;
 
@@ -44,17 +42,17 @@ int new_line();
 
 int putc(char c);
 
-int puts(char *s);
+int puts(char* s);
 
 int clear_screen();
 
 void scroll_up(int rows);
 
-int clear_row();
+int clear_row(int row);
 
- /* void update_cursor(int row, int col)
+/* void update_cursor(int row, int col)
   * by Dark Fiber
   */
- void update_cursor(int row, int col);
+void update_cursor(int row, int col);
 
 #endif

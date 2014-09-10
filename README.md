@@ -26,4 +26,4 @@ If using STARTUP in linker script then startup object file should not occur in a
 * copy the kernel into patition space ...
 * boot OS using harddisk image.
 * steps in [内核引导的捷径(grub2安装到U盘,虚拟镜像等方法)](http://www.cnblogs.com/crazyyer/p/3658358.html)
-* do not mkfs in virtualbox shared folder, it will got problem.
+* do not mkfs in virtualbox shared folder, it gets problem.

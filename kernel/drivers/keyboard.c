@@ -1,19 +1,17 @@
 #include <keyboard.h>
 
-
-
 void keyboard_init()
 {
-	_enable_irq(1);
+    _enable_irq(1);
 
     mcpy(
-        (u8 *)LOWER_DISPLAY_KEY_BUFF, 
-        (u8 *)"XX1234567890-=XXqwertyuiop[]XXasdfghjkl;'`X\\zxcvbnm,./",
+        (u8*)LOWER_DISPLAY_KEY_BUFF,
+        (u8*)"XX1234567890-=XXqwertyuiop[]XXasdfghjkl;'`X\\zxcvbnm,./",
         DISPLAY_KEY_BUFF_SIZE);
 
     mcpy(
-        (u8 *)UPPER_DISPLAY_KEY_BUFF, 
-        (u8 *)"XX!@#$%^&*()_+XXQWERTYUIOP{}XXASDFGHJKL:\"~X\\ZXCVBNM<>?",
+        (u8*)UPPER_DISPLAY_KEY_BUFF,
+        (u8*)"XX!@#$%^&*()_+XXQWERTYUIOP{}XXASDFGHJKL:\"~X\\ZXCVBNM<>?",
         DISPLAY_KEY_BUFF_SIZE);
 
     DISPLAY_KEY_BUFF = LOWER_DISPLAY_KEY_BUFF;
@@ -57,9 +55,14 @@ void break_key(u8 scancode)
     case CAPSLOCL:
         if (DISPLAY_KEY_BUFF == LOWER_DISPLAY_KEY_BUFF)
             DISPLAY_KEY_BUFF = UPPER_DISPLAY_KEY_BUFF;
-        else 
+        else
             DISPLAY_KEY_BUFF = LOWER_DISPLAY_KEY_BUFF;
         break;
+    /*
+    case ESC:
+        __asm__ __volatile__("cli");
+        __asm__ __volatile__("hlt");
+        break;*/
 
     default:
         ;
@@ -68,24 +71,21 @@ void break_key(u8 scancode)
 
 void keyboard_handler()
 {
-    
-	u8 scancode;
+
+    u8 scancode;
 
     /* Read from the keyboard's data buffer */
     scancode = inportb(0x60);
 
     /* If the top bit of the byte we read from the keyboard is
     *  set, that means that a key has just been released */
-    if (scancode & 0x80)
-    {
+    if (scancode & 0x80) {
         /* You can use this one to see if the user released the
         *  shift, alt, or control keys... */
         // xprintf("the released key scancode is %X \n", scancode);
-        
+
         break_key(scancode & 0x7F);
-    }
-    else
-    {
+    } else {
         /* Here, a key was just pressed. Please note that if you
         *  hold a key down, you will get repeated key press
         *  interrupts. */

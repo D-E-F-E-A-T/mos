@@ -11,7 +11,7 @@ void timer_set(int hz)
 void timer_init(int hz)
 {
     timer_set(hz);
-    enable_timer(hz);
+    enable_timer();
 }
 
 void enable_timer()
@@ -34,8 +34,8 @@ void timer_handler()
         // get_RTC(&rtc);
 
         // xprintf("the CMOS RTC time = %d:%d:%d   %d/%d/%d \n",
-        // 		rtc.hour, rtc.minute, rtc.second,
-        // 		rtc.day, rtc.month, rtc.year);
+        //      rtc.hour, rtc.minute, rtc.second,
+        //      rtc.day, rtc.month, rtc.year);
     }
     hz++;
 }

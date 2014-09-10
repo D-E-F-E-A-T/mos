@@ -1,11 +1,12 @@
 #include <idt.h>
 
 static IDTR idtr;
+static idt_entry_t idt_entry[256];
 
 void idt_init()
 {
 
-    idtr.base = IDTR_BASE;
+    idtr.base = (u32)idt_entry;
 
     isr_setup(0, (void*)exp0_wrapper, IDT_CODE_SELECTOR, IDT_ENTRY_FLAGS);
     isr_setup(1, (void*)exp1_wrapper, IDT_CODE_SELECTOR, IDT_ENTRY_FLAGS);
@@ -45,7 +46,7 @@ void idt_init()
     // IRQ Mapping
     pic8259_init(IRQ_BASE, IRQ_BASE + 8);
 
-    idtr.limit = (IDT_ENTRY_COUNT * sizeof(IDT_ENTRY)) - 1;
+    idtr.limit = (IDT_ENTRY_COUNT * sizeof(idt_entry_t)) - 1;
 
     __asm__ __volatile__("lidt %0"
                          : "=m"(idtr));
@@ -53,7 +54,7 @@ void idt_init()
 
 void isr_setup(u8 idt_index, void* callback, u16 selector, u8 attribute)
 {
-    IDT_ENTRY* IDT = (IDT_ENTRY*)idtr.base;
+    idt_entry_t* IDT = (idt_entry_t*)idtr.base;
 
     IDT[idt_index].offset_low = (u32)callback & 0xffff;
     IDT[idt_index].offset_high = ((u32)callback >> 16) & 0xffff;
@@ -61,7 +62,7 @@ void isr_setup(u8 idt_index, void* callback, u16 selector, u8 attribute)
     IDT[idt_index].attr = attribute;
 }
 
-void _exception_dispatch(IDT_EXP_CONTEXT* exp_context)
+void _exception_dispatch(exp_context_t* exp_context)
 {
     xprintf("the ISR number = %d, ERROR no = %d\n", exp_context->isrno, exp_context->errorno);
     xprintf("the segments cs = %d, eip = %d\n",
@@ -73,7 +74,7 @@ void _exception_dispatch(IDT_EXP_CONTEXT* exp_context)
         ;
 }
 
-void _irq_dispatch(IDT_IRQ_CONTEXT* irq_context)
+void _irq_dispatch(irq_context_t* irq_context)
 {
     // xprintf("the IRQ index = %d\n", irq_context->irqno);
     // xprintf("the segments cs = %04d \n",
