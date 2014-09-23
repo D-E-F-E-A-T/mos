@@ -6,7 +6,7 @@
 
 
 CC = gcc
-CCFLAGS := -fno-builtin -nostdinc -std=c99 -fno-stack-protector \
+CCFLAGS := -ggdb -fno-builtin -nostdinc -std=c99 -fno-stack-protector \
 	-I./kernel/include -I./kernel/drivers/include -I./loader -I.
 
 AS = nasm

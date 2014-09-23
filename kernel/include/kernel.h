@@ -10,6 +10,7 @@
 #include <printf.h>
 #include <mm.h>
 #include <header/multiboot.h>
+#include <pmm.h>
 // #include <descriptor.h>
 
 typedef struct

@@ -4,6 +4,8 @@ ENTRY(start)
 SECTIONS
 {
 	. = 0x00100000;
+	PROVIDE( kern_start = . );
+
 	.text BLOCK(1K) : ALIGN(1K)
 	{
 		*(.text)
@@ -29,6 +31,8 @@ SECTIONS
 		*(.bss)
 		*(.bootstrap_stack)
 	}
+
+	PROVIDE( kern_end = . );
 
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */

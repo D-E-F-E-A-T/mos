@@ -25,20 +25,7 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
     puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
     puts("\n=======================================================\n");
 
-    xprintf("Memory Mapping using int 15h E820\n");
-    multiboot_memory_map_t* mem_map_entry = (multiboot_memory_map_t*)mb_info->mmap_addr;
-
-    while (mem_map_entry < (multiboot_memory_map_t*)(mb_info->mmap_addr + mb_info->mmap_length)) {
-
-        xprintf("Base: %08X %08X Limit: %08X %08X Type: %08X \n",
-                mem_map_entry->addr_high,
-                mem_map_entry->addr_low,
-                mem_map_entry->len_high,
-                mem_map_entry->len_low,
-                mem_map_entry->type);
-
-        mem_map_entry++;
-    }
+    pmm_show(mb_info);
 
     __asm__("sti");
 
