@@ -43,4 +43,13 @@ u32 pmm_frame_alloc();
  */
 void pmm_frame_free(u32 page);
 
+/**
+ * Align to 4K, 
+ * @param  value [description]
+ * @return       [description]
+ */
+u32 ceil4096(u32 value);
+
+void pmm_test();
+
 #endif

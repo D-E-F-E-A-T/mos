@@ -7,7 +7,22 @@
  */
 u32 ceil4096(u32 value)
 {
-    return (value + 4095) >> 12 << 12;
+    return (value + FRAME_SIZE - 1) >> 12 << 12;
+}
+
+void pmm_test()
+{
+    u32 addr[3];
+
+    addr[0] = pmm_frame_alloc();
+    addr[1] = pmm_frame_alloc();
+    addr[2] = pmm_frame_alloc();
+    xprintf("addr 1 = %08X, addr 2 = %08X, addr3 = %08X\n", addr[0], addr[1], addr[2]);
+
+    pmm_frame_free(addr[1]);
+    pmm_frame_free(addr[0]);
+    addr[1] = pmm_frame_alloc();
+    xprintf("addr 1 = %08X, addr 2 = %08X, addr3 = %08X\n", addr[0], addr[1], addr[2]);
 }
 
 void pmm_init(multiboot_info_t* mb_info)
@@ -18,13 +33,13 @@ void pmm_init(multiboot_info_t* mb_info)
 
     u32 kernel_size = (u32)kern_end - (u32)kern_start;
 
-    u32 pstart, pend;
+    u32 free_block_start, free_block_end;
 
     pmm_free_frame_count = 0;
 
     // search for a memory block type is 1 and above 1M
     while (mmap_entry_start <= mmap_entry_end) {
-        if (mmap_entry_start->type == 1 && mmap_entry_start->addr_low > 0x100000)
+        if (mmap_entry_start->type == 1 && mmap_entry_start->addr_low == 0x100000)
             break;
 
         mmap_entry_start++;
@@ -32,7 +47,15 @@ void pmm_init(multiboot_info_t* mb_info)
 
     // put it all into free frames
     kernel_size = ceil4096(kernel_size);
-    pend = mmap_entry_start->addr_low + mmap_entry_start->len_low;
+    free_block_start = mmap_entry_start->addr_low + kernel_size;
+    free_block_end = mmap_entry_start->addr_low + mmap_entry_start->len_low;
+
+    while (free_block_start < free_block_end) {
+        pmm_frame_free(free_block_start);
+        free_block_start += FRAME_SIZE;
+    }
+
+    /* use only one block, update needed if use all free blocks. */
 }
 
 void pmm_show(multiboot_info_t* mb_info)

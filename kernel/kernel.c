@@ -2,6 +2,15 @@
 
 extern void gdt_setup();
 
+__attribute__((section(".text.init"))) int keinit(multiboot_info_t* mb_info, u32 mb_magic)
+{
+    char* p = (char*)0xB8000;
+    for (int i = 0; i < 20; ++i)
+        p[i] = 0xAA;
+
+    return 0;
+}
+
 int kemain(multiboot_info_t* mb_info, u32 mb_magic)
 {
     clear_screen();
@@ -28,6 +37,9 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
     pmm_show(mb_info);
 
     __asm__("sti");
+
+    pmm_init(mb_info);
+    pmm_test();
 
     for (;;)
         ;

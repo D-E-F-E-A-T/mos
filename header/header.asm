@@ -12,7 +12,7 @@ FLAG			equ		MEM_MAP | MODULE_ALIGN
 MAGIC			equ 	0x1BADB002
 CHECKSUM		equ 	-(MAGIC + FLAG)
 
-section .text
+section .init.text
 align 4
 
 multiboot_header:
@@ -100,7 +100,7 @@ set_cs:
 	ret
 
 
-[section .data]
+[section .init.data]
 align 4096
 stack:
 	times STACKSIZE db 00
