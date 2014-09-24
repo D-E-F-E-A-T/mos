@@ -1,7 +1,7 @@
 ; this loader is GRUB compatible
 ; no paging, in protected mode, A20 turned on
 global start			; for linder script
-[extern kemain]
+[extern keinit]
 
 start:
 	jmp loader
@@ -29,7 +29,7 @@ loader:
 	finit
 	push eax
 	push ebx
-	call kemain
+	call keinit
 	cli
 
 	; debug point when halt
