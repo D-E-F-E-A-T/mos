@@ -64,12 +64,12 @@ void isr_setup(u8 idt_index, void* callback, u16 selector, u8 attribute)
 
 void _exception_dispatch(exp_context_t* exp_context)
 {
-    xprintf("the ISR number = %d, ERROR no = %d\n", exp_context->isrno, exp_context->errorno);
+    puts("Kernel Exception, System Halt.\n");
+    xprintf("the xx ISR number = %d, ERROR no = %d\n", exp_context->isrno, exp_context->errorno);
     xprintf("the segments cs = %d, eip = %d\n",
             exp_context->cs,
             exp_context->eip);
 
-    puts("Kernel Exception, System Halt.\n");
     for (;;)
         ;
 }

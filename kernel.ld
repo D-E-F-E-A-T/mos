@@ -5,22 +5,22 @@ SECTIONS
 {
 	. = 0x00100000;
 	PROVIDE( kern_start = 0xC0000000 );
-	PAGGING_OFFSET = 0xC0000000;
+	PAGING_OFFSET = 0xC0000000;
 
-	.init.text BLOCK(4K) :
+	.init.text BLOCK(1K) :
 	{
 		*(.init.text)
-		. = ALIGN(4K);
+		. = ALIGN(1K);
 	}
 
-	.init.data BLOCK(4K) :
+	.init.data BLOCK(1K) :
 	{
 		*(.init.data)
-		. = ALIGN(4K);
+		. = ALIGN(1K);
 	}
 
-	. += PAGGING_OFFSET;
-	.text BLOCK(4K) : AT(ADDR(.text) - PAGGING_OFFSET)
+	. += PAGING_OFFSET;
+	.text BLOCK(4K) : AT(ADDR(.text) - PAGING_OFFSET)
 	{
 		*(.text)
 		. = ALIGN(4K);
@@ -28,7 +28,7 @@ SECTIONS
 	
 	
 	/* Read-write data (initialized) */
-	.data BLOCK(4K) : AT(ADDR(.data) - PAGGING_OFFSET)
+	.data BLOCK(4K) : AT(ADDR(.data) - PAGING_OFFSET)
 	{
 		*(.data)
 		*(.rodata)
@@ -36,7 +36,7 @@ SECTIONS
 	}
 
 	/* Read-write data (uninitialized) and stack */
-	.bss BLOCK(4K) : AT(ADDR(.bss) - PAGGING_OFFSET)
+	.bss BLOCK(4K) : AT(ADDR(.bss) - PAGING_OFFSET)
 	{
 		*(COMMON)
 		*(.bss)

@@ -1,15 +1,41 @@
 #include <kernel.h>
 
-extern void gdt_setup();
-
-__attribute__((section(".text.init"))) int keinit(multiboot_info_t* mb_info, u32 mb_magic)
+__attribute__((section(".init.text"))) int keinit(multiboot_info_t* mb_info, u32 mb_magic)
 {
-    char* p = (char*)0xB8000;
-    for (int i = 0; i < 20; ++i)
-        p[i] = 0xAA;
+    u32 cr0;
+    u32 kernel_stack_top;
+
+    pgd_tmp = (pgd_t *)0x1000;
+    pte_low = (pte_t *)0x2000;
+    pte_high = (pte_t *)0x3000;
+
+    pgd_tmp[0] = (pgd_t)pte_low | PAGE_PRESENT | PAGE_WRITE;
+    pgd_tmp[PGD_INDEX(KERNEL_VADDR_OFFSET)] = (pgd_t)pte_high | PAGE_PRESENT | PAGE_WRITE;
+
+    for (int i = 0; i < 1024; ++i) {
+        pte_low[i] = (i << 12) | PAGE_PRESENT | PAGE_WRITE;
+
+        pte_high[i] = (i << 12) | PAGE_PRESENT | PAGE_WRITE;
+    }
+
+    __asm__ __volatile__ ("mov %0, %%cr3" :: "r" (pgd_tmp));
+
+    __asm__ __volatile__ ("mov %0, %%cr0" : "=r" (cr0));
+    cr0 |= 0x80000000;
+    __asm__ __volatile__ ("mov %0, %%cr0" :: "r" (cr0));
+
+    kernel_stack_top = ((u32)kernel_stack + KERNEL_STACK_SIZE) & 0xFFFFFFF0;
+
+    mb_info = (multiboot_info_t *)((u32)mb_info + KERNEL_VADDR_OFFSET);
+    kemain(mb_info, mb_magic);
 
     return 0;
 }
+
+/*void gdt_setup()
+{
+
+}*/
 
 int kemain(multiboot_info_t* mb_info, u32 mb_magic)
 {
@@ -34,12 +60,14 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
     puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
     puts("\n=======================================================\n");
 
-    pmm_show(mb_info);
+    /*pmm_show(mb_info);
 
-    __asm__("sti");
+    
 
     pmm_init(mb_info);
-    pmm_test();
+    pmm_test();*/
+
+    __asm__("sti");
 
     for (;;)
         ;

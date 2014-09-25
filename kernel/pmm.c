@@ -50,6 +50,10 @@ void pmm_init(multiboot_info_t* mb_info)
     free_block_start = mmap_entry_start->addr_low + kernel_size;
     free_block_end = mmap_entry_start->addr_low + mmap_entry_start->len_low;
 
+    /* add offset when paging switch on */
+    free_block_start += 0xC0000000;
+    free_block_end += 0xC0000000;
+
     while (free_block_start < free_block_end) {
         pmm_frame_free(free_block_start);
         free_block_start += FRAME_SIZE;

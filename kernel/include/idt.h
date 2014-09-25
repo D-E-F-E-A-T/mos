@@ -3,18 +3,23 @@
 
 #include <int.h>
 #include <screen.h>
-#include <kernel.h>
 #include <pic8259.h>
 #include <timer.h>
 #include <keyboard.h>
 #include <datetime.h>
 
-#define IDT_CODE_SELECTOR (0x8)
+#define IDT_CODE_SELECTOR (0x10)
 // #define IDTR_BASE (0x9000)
 #define IDT_ENTRY_COUNT (256)
 #define IDT_ENTRY_FLAGS (0x8e)
 
 #define IRQ_BASE (0x20)
+
+typedef struct
+    {
+    u16 limit;
+    u32 base;
+} __attribute__((packed)) IDTR;
 
 struct IDT_ENTRY {
     u16 offset_low; // offset 0-15
