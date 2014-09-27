@@ -11,6 +11,7 @@
 #include <header/multiboot.h>
 #include <pmm.h>
 #include <vmm.h>
+#include <gdt.h>
 // #include <descriptor.h>
 
 __attribute__((section(".init.data"))) pgd_t *pgd_tmp;
@@ -19,8 +20,8 @@ __attribute__((section(".init.data"))) pte_t *pte_low;
 /* map 4M VM start from 3G to 0M PM */
 __attribute__((section(".init.data"))) pte_t *pte_high;
 
-extern void gdt_setup();
-int kemain(multiboot_info_t* mb_info, u32 mb_magic);
+
+int kemain();
 
 /* 16K kernel stack */
 #define KERNEL_STACK_SIZE	(1024 * 16)

@@ -13,11 +13,11 @@ Floppy reading just let cylinder 0 - 79 like a flat mode, no need to set cylinde
 
 If using STARTUP in linker script then startup object file should not occur in argument list, otherwise redefinition error will occur.
 
-~~#### Booting
+~~ #### Booting ~~
 
 * [MBR.bin](./boot/mbr.asm) loaded at 0x7C00, it just load loader.bin and kernel.bin into memory by using int 13h
 * [Loader.bin](./loader/loader.c) loaded at 0x1000, loader collects computer infomation and stroe into somewhere, then switch to 32 bit protected mode.
-* [Kernel.bin](./kernel/kernel.c) loaded at 0x2000, kennel will initialize the IDT and IRQ to handle requests. Then it should perpare the API of mm, fs, io, tasks ...~~
+* [Kernel.bin](./kernel/kernel.c) loaded at 0x2000, kennel will initialize the IDT and IRQ to handle requests. Then it should perpare the API of mm, fs, io, tasks ..
 
 
 #### Hide Booting detail using GRUB2
@@ -27,3 +27,10 @@ If using STARTUP in linker script then startup object file should not occur in a
 * boot OS using harddisk image.
 * steps in [内核引导的捷径(grub2安装到U盘,虚拟镜像等方法)](http://www.cnblogs.com/crazyyer/p/3658358.html)
 * do not mkfs in virtualbox shared folder, it gets problem.
+
+##### Paging careless bug
+mov cr0, eax
+or eax, Paging bit
+mov cr0, eax
+first line should be
+mov eax, cr0

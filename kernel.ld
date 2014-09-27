@@ -7,16 +7,16 @@ SECTIONS
 	PROVIDE( kern_start = 0xC0000000 );
 	PAGING_OFFSET = 0xC0000000;
 
-	.init.text BLOCK(1K) :
+	.init.text BLOCK(4K) :
 	{
 		*(.init.text)
-		. = ALIGN(1K);
+		. = ALIGN(4K);
 	}
 
-	.init.data BLOCK(1K) :
+	.init.data BLOCK(4K) :
 	{
 		*(.init.data)
-		. = ALIGN(1K);
+		. = ALIGN(4K);
 	}
 
 	. += PAGING_OFFSET;

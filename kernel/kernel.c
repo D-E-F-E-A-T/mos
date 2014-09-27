@@ -1,6 +1,16 @@
 #include <kernel.h>
 
-__attribute__((section(".init.text"))) int keinit(multiboot_info_t* mb_info, u32 mb_magic)
+/*void dump_info()
+{
+    int cr0 = _keGetCR0();
+    int cr3 = _keGetCR3();
+
+    xprintf("cr0 = %08X, cr3 = %08X\n", cr0, cr3);
+}*/
+
+extern multiboot_info_t *mb_info_ptr;
+
+__attribute__((section(".init.text"))) int keinit(u32 mb_magic)
 {
     u32 cr0;
     u32 kernel_stack_top;
@@ -20,34 +30,34 @@ __attribute__((section(".init.text"))) int keinit(multiboot_info_t* mb_info, u32
 
     __asm__ __volatile__ ("mov %0, %%cr3" :: "r" (pgd_tmp));
 
-    __asm__ __volatile__ ("mov %0, %%cr0" : "=r" (cr0));
+    // __asm__ __volatile__ ("mov %0, %%cr0" : "=r" (cr0));
+    __asm__ __volatile__ ("mov %%cr0, %0" : "=r" (cr0));
     cr0 |= 0x80000000;
     __asm__ __volatile__ ("mov %0, %%cr0" :: "r" (cr0));
 
+    gdt_install();
+
     kernel_stack_top = ((u32)kernel_stack + KERNEL_STACK_SIZE) & 0xFFFFFFF0;
 
-    mb_info = (multiboot_info_t *)((u32)mb_info + KERNEL_VADDR_OFFSET);
-    kemain(mb_info, mb_magic);
+    __asm__ __volatile__ ("mov %0, %%esp\n\t"
+                            "xor %%ebp, %%ebp" :: "r" (kernel_stack_top));
+
+    kemain();
 
     return 0;
 }
 
-/*void gdt_setup()
+
+int kemain()
 {
 
-}*/
-
-int kemain(multiboot_info_t* mb_info, u32 mb_magic)
-{
     clear_screen();
 
-    if (mb_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
+/*    if (mb_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         xprintf("multiboot eax is not equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
     } else {
         xprintf("multiboot eax is equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
-    }
-
-    gdt_setup();
+    }*/
 
     idt_init();
     timer_init(TIMER_HZ);
@@ -60,12 +70,10 @@ int kemain(multiboot_info_t* mb_info, u32 mb_magic)
     puts("|_|  |_|  \\___/  |_| |_| |_|  \\___/     \\___/  |____/ \n");
     puts("\n=======================================================\n");
 
-    /*pmm_show(mb_info);
+    pmm_show(mb_info_ptr);
 
-    
-
-    pmm_init(mb_info);
-    pmm_test();*/
+    pmm_init(mb_info_ptr);
+    pmm_test();
 
     __asm__("sti");
 

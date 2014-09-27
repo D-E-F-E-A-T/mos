@@ -76,9 +76,12 @@ void _exception_dispatch(exp_context_t* exp_context)
 
 void _irq_dispatch(irq_context_t* irq_context)
 {
-    // xprintf("the IRQ index = %d\n", irq_context->irqno);
-    // xprintf("the segments cs = %04d \n",
-    //  irq_context->cs);
+/*    xprintf("the IRQ index = %d\n", irq_context->irqno);
+    xprintf("the segments cs = %04d \n",
+     irq_context->cs);
+
+    // for (;;)
+    //     ;*/
 
     switch (irq_context->irqno) {
     case 0:

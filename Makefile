@@ -18,7 +18,7 @@ ISR_WRAPPER_O = ./kernel/isr_wrapper.o
 C_OBJS	= 	$(patsubst %.c, %.o, $(wildcard ./kernel/drivers/*.c) $(wildcard ./kernel/*.c))
 		
 
-kernel.bin : header/header.o $(ISR_WRAPPER_O) $(C_OBJS)
+kernel.bin : header/header.o kernel/gdt_flush.o $(ISR_WRAPPER_O) $(C_OBJS)
 	ld -T kernel.ld -o $@ $^
 
 %.o : %.asm

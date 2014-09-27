@@ -8,7 +8,7 @@
 #include <keyboard.h>
 #include <datetime.h>
 
-#define IDT_CODE_SELECTOR (0x10)
+#define IDT_CODE_SELECTOR (0x8)
 // #define IDTR_BASE (0x9000)
 #define IDT_ENTRY_COUNT (256)
 #define IDT_ENTRY_FLAGS (0x8e)
