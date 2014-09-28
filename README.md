@@ -28,9 +28,9 @@ If using STARTUP in linker script then startup object file should not occur in a
 * steps in [内核引导的捷径(grub2安装到U盘,虚拟镜像等方法)](http://www.cnblogs.com/crazyyer/p/3658358.html)
 * do not mkfs in virtualbox shared folder, it gets problem.
 
-##### Paging careless bug
-mov cr0, eax
-or eax, Paging bit
-mov cr0, eax
-first line should be
-mov eax, cr0
+> ##### Paging careless bug
+>> mov cr0, eax
+>> or eax, Paging bit
+>> mov cr0, eax
+>> first line should be
+>> mov eax, cr0
