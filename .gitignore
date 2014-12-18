@@ -1,3 +1,2 @@
 *.o
-*.bin
-*.img
+kernel.bin

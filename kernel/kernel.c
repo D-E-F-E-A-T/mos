@@ -53,12 +53,6 @@ int kemain()
 
     clear_screen();
 
-/*    if (mb_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-        xprintf("multiboot eax is not equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
-    } else {
-        xprintf("multiboot eax is equal MULTIBOOT_BOOTLOADER_MAGIC.\n");
-    }*/
-
     idt_init();
     timer_init(TIMER_HZ);
     keyboard_init();
